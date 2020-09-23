@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/magus_nav"
+    app:startDestination="@id/mainMagusFragment">
+
+    <fragment
+        android:id="@+id/mainMagusFragment"
+        android:name="com.vitaz.sinkcalculator.MagusFragments.Main.MainMagusFragment"
+        android:label="fragment_main_magus"
+        tools:layout="@layout/fragment_main_magus" >
+        <action
+            android:id="@+id/action_mainMagusFragment_to_editMagusFragment"
+            app:destination="@id/editMagusFragment" />
+        <action
+            android:id="@+id/action_mainMagusFragment_to_historyMagusFragment"
+            app:destination="@id/historyMagusFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editMagusFragment"
+        android:name="com.vitaz.sinkcalculator.MagusFragments.Edit.EditMagusFragment"
+        android:label="fragment_edit_magus"
+        tools:layout="@layout/fragment_edit_magus" >
+        <action
+            android:id="@+id/action_editMagusFragment_to_mainMagusFragment"
+            app:destination="@id/mainMagusFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyMagusFragment"
+        android:name="com.vitaz.sinkcalculator.MagusFragments.History.HistoryMagusFragment"
+        android:label="fragment_history_magus"
+        tools:layout="@layout/fragment_history_magus" >
+        <action
+            android:id="@+id/action_historyMagusFragment_to_mainMagusFragment"
+            app:destination="@id/mainMagusFragment" />
+    </fragment>
+</navigation>
