@@ -6,7 +6,8 @@ class Rune (
     val bonus: Int,
     val sinkValue: Double,
     val minusSinkValue: Double,
-    val maxOvermage: Int
+    val maxOvermage: Int,
+    val image: String
 ) {
     override fun toString(): String {
         return runeName

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.R
+import com.vitaz.sinkcalculator.Services.RunesService
 import kotlinx.android.synthetic.main.fragment_main_magus.view.*
 
 class MainMagusFragment : Fragment() {
@@ -22,7 +23,7 @@ class MainMagusFragment : Fragment() {
 
 
 
-        val adapter = MainRuneListAdapter()
+        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, RunesService.runes) }
         val recyclerView = view.runeListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
