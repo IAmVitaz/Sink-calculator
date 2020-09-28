@@ -4,10 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.Model.Rune
 import com.vitaz.sinkcalculator.R
-import com.vitaz.sinkcalculator.Services.RunesService
 import kotlinx.android.synthetic.main.fragment_main_magus_list_item.view.*
 
 class MainRuneListAdapter(
@@ -40,8 +40,12 @@ class MainRuneListAdapter(
         val statSink = runeList[position].sinkValue
         val runeSink = statValue * statSink
         holder.itemView.runeBonus.text = "+${statValue.toString()}"
-        holder.itemView.runeSink.text = "${runeSink.toInt()}  ($statSink*$statValue)"
+        holder.itemView.baseSink.text = "$statSink"
+        holder.itemView.runeSink.text = "$runeSink"
 
+        holder.itemView.rune_row_background.setOnClickListener {
+            holder.itemView.findNavController().navigate(R.id.action_mainMagusFragment_to_editMagusFragment)
+        }
 
     }
 }
