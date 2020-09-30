@@ -40,9 +40,9 @@
     </fragment>
     <fragment
         android:id="@+id/runeListMagusFragment"
-        android:name="com.vitaz.sinkcalculator.RuneListMagusFragment"
+        android:name="com.vitaz.sinkcalculator.MagusFragments.StatList.StatListMagusFragment"
         android:label="fragment_rune_list_magus"
-        tools:layout="@layout/fragment_rune_list_magus" >
+        tools:layout="@layout/fragment_stat_list_magus" >
         <action
             android:id="@+id/action_runeListMagusFragment_to_mainMagusFragment"
             app:destination="@id/mainMagusFragment" />

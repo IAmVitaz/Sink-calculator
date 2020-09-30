@@ -19,6 +19,7 @@ object RunesService {
 
     val statList = ArrayList<String>(getAllStats(ArrayList(runes)))
 
+
     fun getAllStats(runes: ArrayList<Rune>) : ArrayList<String> {
         val stats = ArrayList<String>()
         stats.add(runes.get(0).stat)
