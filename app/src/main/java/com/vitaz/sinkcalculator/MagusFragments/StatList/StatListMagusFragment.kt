@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vitaz.sinkcalculator.MagusFragments.Main.MainRuneListAdapter
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
 import kotlinx.android.synthetic.main.fragment_stat_list_magus.view.*

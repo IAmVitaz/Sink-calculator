@@ -1,6 +1,7 @@
 package com.vitaz.sinkcalculator.Services
 
 import com.vitaz.sinkcalculator.Model.Rune
+import com.vitaz.sinkcalculator.Model.Stat
 
 object RunesService {
 
@@ -17,21 +18,27 @@ object RunesService {
 
         )
 
-    val statList = ArrayList<String>(getAllStats(ArrayList(runes)))
+    val statList = listOf<Stat>(
+        Stat("Selected",null,null),
+        Stat("Unselected", null,null),
+        Stat("Initiative", false, "stat_initiative"),
+        Stat("Vitality", false, "stat_vitality"),
+        Stat("Pods", false, "stat_pods")
+        )
 
 
-    fun getAllStats(runes: ArrayList<Rune>) : ArrayList<String> {
-        val stats = ArrayList<String>()
-        stats.add(runes.get(0).stat)
-
-        if (runes.size >= 1) {
-            for (x in 1 until runes.size-1) {
-                if (runes.get(x).stat != stats.last()){
-                    stats.add(runes.get(x).stat)
-                }
-            }
-        }
-        return stats
-    }
+//    fun getAllStats(runes: ArrayList<Rune>) : ArrayList<String> {
+//        val stats = ArrayList<String>()
+//        stats.add(runes.get(0).stat)
+//
+//        if (runes.size >= 1) {
+//            for (x in 1 until runes.size-1) {
+//                if (runes.get(x).stat != stats.last()){
+//                    stats.add(runes.get(x).stat)
+//                }
+//            }
+//        }
+//        return stats
+//    }
 
 }
