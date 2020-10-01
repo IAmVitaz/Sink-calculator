@@ -1,20 +1,19 @@
 package com.vitaz.sinkcalculator.MagusFragments.StatList
 
 import android.content.Context
+import android.graphics.Color.parseColor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.marginLeft
 import androidx.recyclerview.widget.RecyclerView
-import com.vitaz.sinkcalculator.MagusFragments.Main.MainRuneListAdapter
 import com.vitaz.sinkcalculator.Model.Stat
 import com.vitaz.sinkcalculator.R
-import kotlinx.android.synthetic.main.fragment_main_magus_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_stat_list_magus_item.view.*
+
 
 class StatListAdapter (
     val context: Context,
-    val statList: List<Stat>
+    var statList: List<Stat>
 ): RecyclerView.Adapter<StatListAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -33,11 +32,6 @@ class StatListAdapter (
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         holder.itemView.statName.text = statList[position].stat
-//        if (statList[position].statImage == null) {
-//            val parameter = holder.itemView.statName.layoutParams
-//            holder.itemView.statName.layoutParams()
-//        }
-
 
         //set stat image. remove if null
         if (statList[position].statImage != null){
@@ -53,13 +47,34 @@ class StatListAdapter (
                 holder.itemView.actionButton.visibility = View.INVISIBLE
             }
             statList[position].isSelected!! -> {
-                holder.itemView.actionButton.setImageResource(R.drawable.add_circle_icon)
+                holder.itemView.actionButton.setImageResource(R.drawable.remove_circle_icon)
+                holder.itemView.actionButton.drawable.setTint(parseColor("#FF0000"));
             }
             else -> {
-                holder.itemView.actionButton.setImageResource(R.drawable.remove_circle_icon)
+                holder.itemView.actionButton.setImageResource(R.drawable.add_circle_icon)
+                holder.itemView.actionButton.drawable.setTint(parseColor("#008000"));
             }
         }
 
+        holder.itemView.actionButton.setOnClickListener {
+
+            val itemToMove = statList[position]
+
+            if (!statList[position].isSelected!!){
+                statList[position].isSelected = true
+                holder.itemView.actionButton.setImageResource(R.drawable.remove_circle_icon)
+                holder.itemView.actionButton.drawable.setTint(parseColor("#FF0000"));
+
+            } else {
+                statList[position].isSelected = false
+                holder.itemView.actionButton.setImageResource(R.drawable.add_circle_icon)
+                holder.itemView.actionButton.drawable.setTint(parseColor("#008000"));
+            }
+
+        }
+
     }
+
+
 
 }

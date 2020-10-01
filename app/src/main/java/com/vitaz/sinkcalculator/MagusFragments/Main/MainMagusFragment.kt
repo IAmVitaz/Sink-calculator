@@ -1,18 +1,22 @@
 package com.vitaz.sinkcalculator.MagusFragments.Main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
+import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
 import kotlinx.android.synthetic.main.fragment_main_magus.view.*
 
 class MainMagusFragment : Fragment() {
 
+    private val mMagusViewModel: MagusViewModel by viewModels()
     //private val adapter: MainRuneListAdapter by lazy {MainRuneListAdapter()}
 
     override fun onCreateView(
@@ -23,8 +27,8 @@ class MainMagusFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_main_magus, container, false)
 
 
-
-        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, RunesService.runes) }
+        //Inflate recyclerView with data
+        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, mMagusViewModel.activeRuneList) }
         val recyclerView = view.runeListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
@@ -38,6 +42,9 @@ class MainMagusFragment : Fragment() {
         }
 
         return view
+
+
+
     }
 
 }

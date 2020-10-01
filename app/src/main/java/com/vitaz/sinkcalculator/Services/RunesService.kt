@@ -19,8 +19,8 @@ object RunesService {
         )
 
     val statList = listOf<Stat>(
-        Stat("Selected",null,null),
-        Stat("Unselected", null,null),
+        //Stat("Selected",null,null),
+        //Stat("Unselected", null,null),
         Stat("Initiative", false, "stat_initiative"),
         Stat("Vitality", false, "stat_vitality"),
         Stat("Pods", false, "stat_pods")
