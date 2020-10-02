@@ -26,7 +26,7 @@ class StatListMagusFragment : Fragment() {
         val mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
         //Show stats in recycler view
-        val adapter = parentFragment?.context?.let { StatListAdapter(it, mMagusViewModel.activeListOfStats, mMagusViewModel.statLowerHeaderPosition) }
+        val adapter = parentFragment?.context?.let { StatListAdapter(it, mMagusViewModel.activeListOfStats) }
         val recyclerView = view.statListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())

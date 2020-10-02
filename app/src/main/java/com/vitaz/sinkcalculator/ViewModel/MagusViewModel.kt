@@ -12,7 +12,4 @@ class MagusViewModel: ViewModel() {
 
     var activeRuneList = RunesService.runes.toMutableList()
 
-    var statLowerHeaderPosition = 1
-
-
 }

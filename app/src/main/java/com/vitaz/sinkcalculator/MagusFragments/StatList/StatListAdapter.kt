@@ -2,6 +2,7 @@ package com.vitaz.sinkcalculator.MagusFragments.StatList
 
 import android.content.Context
 import android.graphics.Color.parseColor
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,10 @@ import kotlinx.android.synthetic.main.fragment_stat_list_magus_item.view.*
 
 class StatListAdapter (
     val context: Context,
-    var statList: MutableList<Stat>,
-    var lowerHeaderPosition: Int
+    var statList: MutableList<Stat>
 ): RecyclerView.Adapter<StatListAdapter.MyViewHolder>() {
 
+    private var lowerHeaderPosition = findLowerHeaderPosition(statList)
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -34,6 +35,11 @@ class StatListAdapter (
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         holder.itemView.statName.text = statList[position].stat
+        if (statList[position].isSelected == null) {
+            holder.itemView.statName.setTypeface(null, Typeface.BOLD)
+        } else {
+            holder.itemView.statName.setTypeface(null, Typeface.NORMAL)
+        }
 
         //set stat image. remove if null
         holder.itemView.statImage.visibility = View.VISIBLE
@@ -62,7 +68,7 @@ class StatListAdapter (
 
         holder.itemView.actionButton.setOnClickListener {
 
-            if (lowerHeaderPosition < 1) lowerHeaderPosition = 1
+//            if (lowerHeaderPosition < 1) lowerHeaderPosition = 1
 
             val itemToMove = statList[position]
 
@@ -87,6 +93,18 @@ class StatListAdapter (
         }
 
     }
+
+
+    private fun findLowerHeaderPosition(list: MutableList<Stat>): Int {
+        var position = 1
+        list.forEach(){
+            if (it.isSelected == true) {
+                position ++
+            }
+        }
+        return position
+    }
+
 
 
 
