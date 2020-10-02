@@ -19,24 +19,23 @@ object RunesService {
         )
 
     var statList = listOf<Stat>(
-        Stat("Selected:",null,null),
-        Stat("Unselected:", null,null),
-        Stat("Initiative", false, "stat_initiative"),
-        Stat("Vitality", false, "stat_vitality"),
-        Stat("Pods", false, "stat_pods")
+        Stat("Selected:", 0.0, 0.0,null,null),
+        Stat("Unselected:", 0.0, 0.0, null,null),
+        Stat("Initiative", 0.1, 0.05, false, "stat_initiative"),
+        Stat("Vitality", 0.2, 0.1, false, "stat_vitality"),
+        Stat("Pods", 0.25, 0.125, false, "stat_pods")
         )
 
     fun createNewStatSet() : MutableList<Stat> {
         val newList = mutableListOf<Stat>()
         statList.forEach(){
-            newList.add(Stat(it.statName, it.isSelected, it.statImage))
+            newList.add(Stat(it.statName, it.sink, it.minusSink, it.isSelected, it.statImage))
         }
 
         return newList
     }
 
     fun createNewRuneSet(statList: MutableList<Stat>): MutableList<Rune> {
-
         val runeList = mutableListOf<Rune>()
 
         statList.forEach() {stat ->
@@ -48,6 +47,18 @@ object RunesService {
         }
 
         return runeList
+    }
+
+    fun createListOfSelectedStats(statList: MutableList<Stat>): MutableList<Stat> {
+        val selectedStats = mutableListOf<Stat>()
+
+        statList.forEach() {
+            if (it.isSelected == true) {
+                selectedStats.add(it)
+            }
+        }
+
+        return selectedStats
     }
 
 

@@ -12,4 +12,6 @@ class MagusViewModel: ViewModel() {
 
     var activeListOfRunes = RunesService.createNewRuneSet(activeListOfStats)
 
+    var selectedStats = RunesService.createListOfSelectedStats(activeListOfStats)
+
 }
