@@ -13,10 +13,10 @@ import kotlinx.android.synthetic.main.fragment_stat_list_magus_item.view.*
 
 class StatListAdapter (
     val context: Context,
-    var statList: MutableList<Stat>
+    var statList: MutableList<Stat>,
+    var lowerHeaderPosition: Int
 ): RecyclerView.Adapter<StatListAdapter.MyViewHolder>() {
 
-    var lowerHeaderPosition: Int = 1
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -61,6 +61,8 @@ class StatListAdapter (
         }
 
         holder.itemView.actionButton.setOnClickListener {
+
+            if (lowerHeaderPosition < 1) lowerHeaderPosition = 1
 
             val itemToMove = statList[position]
 

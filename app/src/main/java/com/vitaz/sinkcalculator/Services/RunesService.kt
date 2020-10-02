@@ -18,13 +18,22 @@ object RunesService {
 
         )
 
-    val statList = listOf<Stat>(
+    var statList = listOf<Stat>(
         Stat("Selected:",null,null),
         Stat("Unselected:", null,null),
         Stat("Initiative", false, "stat_initiative"),
         Stat("Vitality", false, "stat_vitality"),
         Stat("Pods", false, "stat_pods")
         )
+
+    fun createNewStatSet() : MutableList<Stat> {
+        val newList = mutableListOf<Stat>()
+        statList.forEach(){
+            newList.add(Stat(it.stat, it.isSelected, it.statImage))
+        }
+
+        return newList
+    }
 
 
 //    fun getAllStats(runes: ArrayList<Rune>) : ArrayList<String> {

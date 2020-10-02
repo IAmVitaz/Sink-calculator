@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
@@ -13,8 +14,6 @@ import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
 import kotlinx.android.synthetic.main.fragment_stat_list_magus.view.*
 
 class StatListMagusFragment : Fragment() {
-
-    private val mMagusViewModel: MagusViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +23,10 @@ class StatListMagusFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_stat_list_magus, container, false)
 
+        val mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
+
         //Show stats in recycler view
-        val adapter = parentFragment?.context?.let { StatListAdapter(it, mMagusViewModel.activeListOfStats) }
+        val adapter = parentFragment?.context?.let { StatListAdapter(it, mMagusViewModel.activeListOfStats, mMagusViewModel.statLowerHeaderPosition) }
         val recyclerView = view.statListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())

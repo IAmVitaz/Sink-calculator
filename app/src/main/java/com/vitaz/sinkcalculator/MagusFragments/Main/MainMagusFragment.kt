@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.R
@@ -16,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_main_magus.view.*
 
 class MainMagusFragment : Fragment() {
 
-    private val mMagusViewModel: MagusViewModel by viewModels()
     //private val adapter: MainRuneListAdapter by lazy {MainRuneListAdapter()}
 
     override fun onCreateView(
@@ -26,6 +26,7 @@ class MainMagusFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_main_magus, container, false)
 
+        val mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
         //Inflate recyclerView with data
         val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, mMagusViewModel.activeRuneList) }
