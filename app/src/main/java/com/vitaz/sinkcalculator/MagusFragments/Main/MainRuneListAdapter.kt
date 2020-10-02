@@ -29,6 +29,7 @@ class MainRuneListAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
         holder.itemView.runeName.text = runeList[position].runeName
 
         //set up rune images

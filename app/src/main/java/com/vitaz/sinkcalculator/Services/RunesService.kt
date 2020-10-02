@@ -29,11 +29,27 @@ object RunesService {
     fun createNewStatSet() : MutableList<Stat> {
         val newList = mutableListOf<Stat>()
         statList.forEach(){
-            newList.add(Stat(it.stat, it.isSelected, it.statImage))
+            newList.add(Stat(it.statName, it.isSelected, it.statImage))
         }
 
         return newList
     }
+
+    fun createNewRuneSet(statList: MutableList<Stat>): MutableList<Rune> {
+
+        val runeList = mutableListOf<Rune>()
+
+        statList.forEach() {stat ->
+            runes.forEach() {rune ->
+                if (stat.isSelected == true && stat.statName.equals(rune.statName)) {
+                    runeList.add(rune)
+                }
+            }
+        }
+
+        return runeList
+    }
+
 
 
 //    fun getAllStats(runes: ArrayList<Rune>) : ArrayList<String> {

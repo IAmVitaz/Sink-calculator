@@ -1,7 +1,7 @@
 package com.vitaz.sinkcalculator.Model
 
 class Rune (
-    val stat: String,
+    val statName: String,
     val runeName: String,
     val bonus: Int,
     val sinkValue: Double,

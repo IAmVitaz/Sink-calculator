@@ -34,7 +34,7 @@ class StatListAdapter (
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.itemView.statName.text = statList[position].stat
+        holder.itemView.statName.text = statList[position].statName
         if (statList[position].isSelected == null) {
             holder.itemView.statName.setTypeface(null, Typeface.BOLD)
         } else {

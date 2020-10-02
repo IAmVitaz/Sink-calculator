@@ -10,6 +10,6 @@ class MagusViewModel: ViewModel() {
 
     var activeListOfStats = RunesService.createNewStatSet()
 
-    var activeRuneList = RunesService.runes.toMutableList()
+    var activeListOfRunes = RunesService.createNewRuneSet(activeListOfStats)
 
 }

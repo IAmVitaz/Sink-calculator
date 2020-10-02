@@ -1,12 +1,10 @@
 package com.vitaz.sinkcalculator.MagusFragments.Main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +15,8 @@ import kotlinx.android.synthetic.main.fragment_main_magus.view.*
 
 class MainMagusFragment : Fragment() {
 
-    //private val adapter: MainRuneListAdapter by lazy {MainRuneListAdapter()}
+    lateinit var mMagusViewModel: MagusViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,13 +25,11 @@ class MainMagusFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_main_magus, container, false)
 
-        val mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
+        mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
-        //Inflate recyclerView with data
-        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, mMagusViewModel.activeRuneList) }
-        val recyclerView = view.runeListRecyclerView
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        mMagusViewModel.activeListOfRunes.clear()
+        mMagusViewModel.activeListOfRunes = RunesService.createNewRuneSet(mMagusViewModel.activeListOfStats)
+
 
         view.editRuneList.setOnClickListener {
             findNavController().navigate(R.id.action_mainMagusFragment_to_runeListMagusFragment)
@@ -43,9 +40,16 @@ class MainMagusFragment : Fragment() {
         }
 
         return view
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-
+        //Inflate recyclerView with data
+        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, mMagusViewModel.activeListOfRunes) }
+        val recyclerView = view.runeListRecyclerView
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
     }
 
 }
