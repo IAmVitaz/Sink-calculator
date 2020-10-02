@@ -27,10 +27,6 @@ class MainMagusFragment : Fragment() {
 
         mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
-        mMagusViewModel.activeListOfRunes.clear()
-        mMagusViewModel.activeListOfRunes = RunesService.createNewRuneSet(mMagusViewModel.activeListOfStats)
-
-
         view.editRuneList.setOnClickListener {
             findNavController().navigate(R.id.action_mainMagusFragment_to_runeListMagusFragment)
         }

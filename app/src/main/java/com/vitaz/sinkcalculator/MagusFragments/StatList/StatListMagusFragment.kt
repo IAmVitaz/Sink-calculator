@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
@@ -26,16 +27,24 @@ class StatListMagusFragment : Fragment() {
 
         mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
+        view.moveToMain.setOnClickListener {
+
+            mMagusViewModel.activeListOfRunes.clear()
+            mMagusViewModel.activeListOfRunes = RunesService.createNewRuneSet(mMagusViewModel.activeListOfStats)
+
+            findNavController().navigate(R.id.action_runeListMagusFragment_to_mainMagusFragment)
+        }
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         //Show stats in recycler view
         val adapter = parentFragment?.context?.let { StatListAdapter(it, mMagusViewModel.activeListOfStats) }
         val recyclerView = view.statListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-
-        return view
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 }
