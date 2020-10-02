@@ -40,7 +40,7 @@ class MainRuneListAdapter(
         val statValue = runeList[position].bonus
         val statSink = runeList[position].sinkValue
         val runeSink = statValue * statSink
-        holder.itemView.runeBonus.text = "+${statValue.toString()}"
+        holder.itemView.runeBonus.text = "+$statValue"
         holder.itemView.baseSink.text = "$statSink"
         holder.itemView.runeSink.text = "$runeSink"
 
