@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.MagusFragments.Main.MainRuneListAdapter
 import com.vitaz.sinkcalculator.Model.Rune
+import com.vitaz.sinkcalculator.Model.SinkModifier
 import com.vitaz.sinkcalculator.Model.Stat
 import com.vitaz.sinkcalculator.R
 import kotlinx.android.synthetic.main.fragment_edit_magus_list_item.view.*
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_main_magus_list_item.view.*
 
 class EditMagusAdapter (
     val context: Context,
-    val statList: List<Stat>
+    val statList: List<SinkModifier>
 ): RecyclerView.Adapter<EditMagusAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

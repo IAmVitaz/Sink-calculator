@@ -32,9 +32,6 @@ class StatListMagusFragment : Fragment() {
             mMagusViewModel.activeListOfRunes.clear()
             mMagusViewModel.activeListOfRunes = RunesService.createNewRuneSet(mMagusViewModel.activeListOfStats)
 
-            mMagusViewModel.selectedStats.clear()
-            mMagusViewModel.selectedStats = RunesService.createListOfSelectedStats(mMagusViewModel.activeListOfStats)
-
             findNavController().navigate(R.id.action_runeListMagusFragment_to_mainMagusFragment)
         }
 
