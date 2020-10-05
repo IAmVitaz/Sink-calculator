@@ -25,18 +25,18 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/switch2"
+        app:layout_constraintEnd_toStartOf="@+id/negativeLayoutSwitch"
         app:layout_constraintStart_toEndOf="@+id/statImage"
         app:layout_constraintTop_toTopOf="parent">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout8"
-            android:layout_width="0dp"
+            android:id="@+id/statNameLayout"
+            android:layout_width="100dp"
             android:layout_height="0dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
+            app:layout_constraintEnd_toStartOf="@+id/positiveSinkLayout"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -53,55 +53,58 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout6"
+            android:id="@+id/positiveSinkLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout7"
+            app:layout_constraintEnd_toStartOf="@+id/negativeSinkLayout"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/constraintLayout8"
+            app:layout_constraintStart_toEndOf="@+id/statNameLayout"
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/editTextNumber"
+                android:id="@+id/positiveSinkStat"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:backgroundTint="@color/colorPrimaryDark"
+                android:backgroundTint="@android:color/background_dark"
                 android:ems="10"
-                android:inputType="numberSigned|numberDecimal"
+                android:gravity="center_horizontal"
+                android:inputType="numberSigned"
+                android:numeric="signed"
+                android:textColorLink="#000000"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView8"
-                app:layout_constraintStart_toEndOf="@+id/imageView7"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintEnd_toStartOf="@+id/positiveSinkStatPlus"
+                app:layout_constraintStart_toEndOf="@+id/positiveSinkStatMinus"
+                app:layout_constraintTop_toBottomOf="@+id/positiveSinkLable" />
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/positiveSinkStatMinus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:tint="@android:color/background_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/positiveSinkLable"
                 app:srcCompat="@drawable/remove_circle_icon" />
 
             <ImageView
-                android:id="@+id/imageView8"
+                android:id="@+id/positiveSinkStatPlus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:tint="@android:color/background_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/positiveSinkLable"
                 app:srcCompat="@drawable/add_circle_icon" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/positiveSinkLable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Positive sink"
@@ -113,56 +116,59 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout7"
+            android:id="@+id/negativeSinkLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
+            app:layout_constraintStart_toEndOf="@+id/positiveSinkLayout"
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/editTextNumber"
+                android:id="@+id/negativeSinkStat"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:backgroundTint="@color/colorPrimaryDark"
+                android:backgroundTint="@android:color/background_dark"
                 android:ems="10"
-                android:inputType="numberSigned|numberDecimal"
+                android:gravity="center_horizontal"
+                android:inputType="numberSigned"
+                android:numeric="signed"
+                android:textColorLink="#000000"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView8"
-                app:layout_constraintStart_toEndOf="@+id/imageView7"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                app:layout_constraintEnd_toStartOf="@+id/negativeSinkStatPlus"
+                app:layout_constraintStart_toEndOf="@+id/negativeSinkStatMinus"
+                app:layout_constraintTop_toBottomOf="@+id/negativeSinkLable" />
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/negativeSinkStatMinus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:tint="@android:color/background_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                app:layout_constraintTop_toBottomOf="@+id/negativeSinkLable"
                 app:srcCompat="@drawable/remove_circle_icon" />
 
             <ImageView
-                android:id="@+id/imageView8"
+                android:id="@+id/negativeSinkStatPlus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:tint="@android:color/background_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                app:layout_constraintTop_toBottomOf="@+id/negativeSinkLable"
                 app:srcCompat="@drawable/add_circle_icon" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/negativeSinkLable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Negative sink"
@@ -176,7 +182,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/negativeLayoutSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
