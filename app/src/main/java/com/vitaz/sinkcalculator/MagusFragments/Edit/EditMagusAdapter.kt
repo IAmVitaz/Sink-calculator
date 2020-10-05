@@ -69,13 +69,18 @@ class EditMagusAdapter (
 
         holder.itemView.positiveSinkStat.addTextChangedListener {
             if (it.toString() != "-"){
-                statList[position].statPositive = it.toString().toInt()
+                if (it.toString() == "") {
+                    statList[position].statPositive = 0
+                } else statList[position].statPositive = it.toString().toInt()
+
             }
         }
 
         holder.itemView.negativeSinkStat.addTextChangedListener {
             if (it.toString() != "-") {
-                statList[position].statNegative = it.toString().toInt()
+                if (it.toString() == "") {
+                    statList[position].statNegative = 0
+                } else statList[position].statNegative = it.toString().toInt()
             }
         }
 
