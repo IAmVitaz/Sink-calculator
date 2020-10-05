@@ -1,5 +1,6 @@
 package com.vitaz.sinkcalculator.MagusFragments.Main
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -35,6 +36,9 @@ class MainMagusFragment : Fragment() {
             findNavController().navigate(R.id.action_mainMagusFragment_to_historyMagusFragment)
         }
 
+        //view.curentSinkValue.text = mMagusViewModel.currentSink.toString()
+        modifySinkValueOnTheMain(view, mMagusViewModel)
+
         return view
     }
 
@@ -46,6 +50,30 @@ class MainMagusFragment : Fragment() {
         val recyclerView = view.runeListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+    }
+
+    fun modifySinkValueOnTheMain(view: View, viewModel: MagusViewModel) {
+
+        when {
+            viewModel.currentSink > viewModel.previousSink -> {
+                view.curentSinkValue.setTextColor(Color.parseColor("#008000"))
+                view.sinkDynamic.visibility = View.VISIBLE
+                view.sinkDynamic.setImageResource(R.drawable.arrow_upward_icon)
+                view.sinkDynamic.drawable.setTint(Color.parseColor("#008000"))
+            }
+            viewModel.currentSink < viewModel.previousSink -> {
+                view.curentSinkValue.setTextColor(Color.parseColor("#FF0000"))
+                view.sinkDynamic.visibility = View.VISIBLE
+                view.sinkDynamic.setImageResource(R.drawable.arrow_downward_icon)
+                view.sinkDynamic.drawable.setTint(Color.parseColor("#FF0000"))
+            }
+            else -> {
+                view.sinkDynamic.visibility = View.GONE
+                view.curentSinkValue.setTextColor(Color.parseColor("#000000"))
+            }
+        }
+        view.curentSinkValue.text = mMagusViewModel.currentSink.toString()
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.vitaz.sinkcalculator.Services
 
+import android.util.Log
 import com.vitaz.sinkcalculator.Model.Rune
 import com.vitaz.sinkcalculator.Model.SinkModifier
 import com.vitaz.sinkcalculator.Model.Stat
@@ -61,6 +62,22 @@ object RunesService {
             }
         }
         return newSinkModifierList
+    }
+
+    fun calculateSink(sinkModifierList: List<SinkModifier>, currentSink: Double): Double {
+
+        var newSink = currentSink
+        var sinkDifference = 0.0
+
+        sinkModifierList.forEach() {
+            sinkDifference += (it.sinkPositiveValue * it.statPositive) + (it.sinkNegativeValue * it.statNegative)
+        }
+
+        Log.d("Sink difference", sinkDifference.toString())
+
+        newSink -= sinkDifference
+
+        return newSink
     }
 
 

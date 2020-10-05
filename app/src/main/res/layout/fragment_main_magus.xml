@@ -42,10 +42,12 @@
                 android:id="@+id/curentSinkValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="0"
                 android:textSize="28sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/sinkDynamic"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/curentSink" />
 
@@ -55,8 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Current sink"
-                app:layout_constraintEnd_toEndOf="@+id/curentSinkValue"
-                app:layout_constraintStart_toStartOf="@+id/curentSinkValue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -89,6 +91,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/sinkDynamic"
+                android:layout_width="20dp"
+                android:layout_height="35dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_upward_icon"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/curentSinkValue"
+                app:layout_constraintTop_toBottomOf="@+id/curentSink" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

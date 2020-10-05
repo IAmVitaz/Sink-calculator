@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.MagusFragments.StatList.StatListAdapter
 import com.vitaz.sinkcalculator.R
@@ -29,9 +30,17 @@ class EditMagusFragment : Fragment() {
 
         mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
+        view.currentSink.text = mMagusViewModel.currentSink.toString()
+
         // Create a new set of SinkModifier objects to count sink change
         mMagusViewModel.listOfSinkModifiers.clear()
         mMagusViewModel.listOfSinkModifiers = RunesService.createNewListOfSinkModifiers(mMagusViewModel.activeListOfStats)
+
+        view.confirmEditing.setOnClickListener {
+            mMagusViewModel.previousSink = mMagusViewModel.currentSink
+            mMagusViewModel.currentSink = RunesService.calculateSink(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.previousSink)
+            findNavController().navigate(R.id.action_editMagusFragment_to_mainMagusFragment)
+        }
 
         return view
     }

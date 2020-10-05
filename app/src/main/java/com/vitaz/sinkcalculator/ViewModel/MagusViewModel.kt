@@ -14,4 +14,8 @@ class MagusViewModel: ViewModel() {
 
     var listOfSinkModifiers = RunesService.createNewListOfSinkModifiers(activeListOfStats)
 
+    var previousSink: Double = 0.0
+
+    var currentSink: Double = 0.0
+
 }
