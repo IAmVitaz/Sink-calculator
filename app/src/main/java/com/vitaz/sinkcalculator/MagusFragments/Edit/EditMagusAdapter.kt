@@ -17,7 +17,8 @@ import kotlinx.android.synthetic.main.fragment_main_magus_list_item.view.*
 
 class EditMagusAdapter (
     val context: Context,
-    val statList: MutableList<SinkModifier>
+    val statList: MutableList<SinkModifier>,
+    val selectedRune: Rune
 ): RecyclerView.Adapter<EditMagusAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -34,6 +35,12 @@ class EditMagusAdapter (
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        
+        if (statList[position].statName == selectedRune.statName) {
+            statList[position].statPositive = selectedRune.bonus
+            holder.itemView.positiveSinkStat.setText(selectedRune.bonus.toString())
+
+        }
 
         // Arrange Negative Sink block
         holder.itemView.negativeSinkLayout.visibility = View.GONE

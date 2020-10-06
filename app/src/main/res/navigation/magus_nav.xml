@@ -5,21 +5,7 @@
     android:id="@+id/magus_nav"
     app:startDestination="@id/mainMagusFragment">
 
-    <fragment
-        android:id="@+id/mainMagusFragment"
-        android:name="com.vitaz.sinkcalculator.MagusFragments.Main.MainMagusFragment"
-        android:label="fragment_main_magus"
-        tools:layout="@layout/fragment_main_magus" >
-        <action
-            android:id="@+id/action_mainMagusFragment_to_editMagusFragment"
-            app:destination="@id/editMagusFragment" />
-        <action
-            android:id="@+id/action_mainMagusFragment_to_historyMagusFragment"
-            app:destination="@id/historyMagusFragment" />
-        <action
-            android:id="@+id/action_mainMagusFragment_to_runeListMagusFragment"
-            app:destination="@id/runeListMagusFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/editMagusFragment"
         android:name="com.vitaz.sinkcalculator.MagusFragments.Edit.EditMagusFragment"
@@ -28,6 +14,9 @@
         <action
             android:id="@+id/action_editMagusFragment_to_mainMagusFragment"
             app:destination="@id/mainMagusFragment" />
+        <argument
+            android:name="selectedRune"
+            app:argType="com.vitaz.sinkcalculator.Model.Rune" />
     </fragment>
     <fragment
         android:id="@+id/historyMagusFragment"
@@ -46,5 +35,20 @@
         <action
             android:id="@+id/action_runeListMagusFragment_to_mainMagusFragment"
             app:destination="@id/mainMagusFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainMagusFragment"
+        android:name="com.vitaz.sinkcalculator.MagusFragments.Main.MainMagusFragment"
+        android:label="fragment_main_magus"
+        tools:layout="@layout/fragment_main_magus" >
+        <action
+            android:id="@+id/action_mainMagusFragment_to_editMagusFragment"
+            app:destination="@id/editMagusFragment" />
+        <action
+            android:id="@+id/action_mainMagusFragment_to_historyMagusFragment"
+            app:destination="@id/historyMagusFragment" />
+        <action
+            android:id="@+id/action_mainMagusFragment_to_runeListMagusFragment"
+            app:destination="@id/runeListMagusFragment" />
     </fragment>
 </navigation>

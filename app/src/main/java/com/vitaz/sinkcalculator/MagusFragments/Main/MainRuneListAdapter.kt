@@ -45,7 +45,8 @@ class MainRuneListAdapter(
         holder.itemView.runeSink.text = "$runeSink"
 
         holder.itemView.rune_row_background.setOnClickListener {
-            holder.itemView.findNavController().navigate(R.id.action_mainMagusFragment_to_editMagusFragment)
+            val action = MainMagusFragmentDirections.actionMainMagusFragmentToEditMagusFragment(runeList[position])
+            holder.itemView.findNavController().navigate(action)
         }
 
     }
