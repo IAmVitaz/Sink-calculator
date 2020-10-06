@@ -35,7 +35,7 @@ class EditMagusAdapter (
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        
+
         if (statList[position].statName == selectedRune.statName) {
             statList[position].statPositive = selectedRune.bonus
             holder.itemView.positiveSinkStat.setText(selectedRune.bonus.toString())

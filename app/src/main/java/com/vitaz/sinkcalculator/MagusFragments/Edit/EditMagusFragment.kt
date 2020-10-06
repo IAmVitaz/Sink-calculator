@@ -6,17 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vitaz.sinkcalculator.MagusFragments.StatList.StatListAdapter
+import com.vitaz.sinkcalculator.Model.SinkModifier
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
 import kotlinx.android.synthetic.main.fragment_edit_magus.view.*
-import kotlinx.android.synthetic.main.fragment_edit_magus_list_item.view.*
-import kotlinx.android.synthetic.main.fragment_stat_list_magus.view.*
+import kotlin.math.round
 
 class EditMagusFragment : Fragment() {
 
@@ -41,8 +41,13 @@ class EditMagusFragment : Fragment() {
         mMagusViewModel.listOfSinkModifiers = RunesService.createNewListOfSinkModifiers(mMagusViewModel.activeListOfStats)
 
         view.confirmEditing.setOnClickListener {
+
             mMagusViewModel.previousSink = mMagusViewModel.currentSink
-            mMagusViewModel.currentSink = RunesService.calculateSink(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.previousSink)
+            mMagusViewModel.currentSink = calculateSink(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.previousSink)
+
+            val message = generageHistoryMessage(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.currentSink, mMagusViewModel.previousSink)
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+
             findNavController().navigate(R.id.action_editMagusFragment_to_mainMagusFragment)
         }
 
@@ -63,5 +68,48 @@ class EditMagusFragment : Fragment() {
         val recyclerView = view.characteristicEditListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+    }
+
+    fun calculateSink(sinkModifierList: List<SinkModifier>, currentSink: Double): Double {
+        var newSink = currentSink
+        var sinkDifference = 0.0
+        sinkModifierList.forEach() {
+            sinkDifference += (it.sinkPositiveValue * it.statPositive) + (it.sinkNegativeValue * it.statNegative)
+        }
+        Log.d("Sink difference", sinkDifference.toString())
+        newSink -= sinkDifference
+        return round(newSink*100) /100
+    }
+
+    fun generageHistoryMessage (sinkModifierList: List<SinkModifier>, currentSink: Double, previousSink: Double): String {
+        var historyMessage = ""
+        sinkModifierList.forEach() {
+            if (it.statPositive != 0) {
+                if (historyMessage == "") {
+                    if (it.statPositive > 0) historyMessage += "+${it.statPositive.toString()} ${it.statName}"
+                    else historyMessage += "${it.statPositive.toString()} ${it.statName}"
+                }
+                else {
+                    if (it.statPositive > 0) historyMessage += ", +${it.statPositive.toString()} ${it.statName}"
+                    else historyMessage += ", ${it.statPositive.toString()} ${it.statName}"
+                }
+            }
+            if (it.statNegative != 0) {
+                if (historyMessage == "") {
+                    if (it.statNegative > 0) historyMessage += "+${it.statNegative.toString()} ${it.statName}"
+                    else historyMessage += "${it.statNegative.toString()} ${it.statName}"
+                }
+                else {
+                    if (it.statNegative > 0) historyMessage += ", +${it.statNegative.toString()} ${it.statName}"
+                    else historyMessage += ", ${it.statNegative.toString()} ${it.statName}"
+                }
+            }
+        }
+        if (historyMessage != "") {
+            val sinkDifference = round((currentSink - previousSink)*100)/100
+            if (sinkDifference > 0) historyMessage += ", +${currentSink - previousSink} sink"
+            else historyMessage += ", ${currentSink - previousSink} sink"
+        }
+        return historyMessage
     }
 }

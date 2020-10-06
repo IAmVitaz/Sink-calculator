@@ -66,20 +66,6 @@ object RunesService {
     }
 
 
-    fun calculateSink(sinkModifierList: List<SinkModifier>, currentSink: Double): Double {
-        var newSink = currentSink
-        var sinkDifference = 0.0
-        sinkModifierList.forEach() {
-            sinkDifference += (it.sinkPositiveValue * it.statPositive) + (it.sinkNegativeValue * it.statNegative)
-        }
-        Log.d("Sink difference", sinkDifference.toString())
-        newSink -= sinkDifference
-        return round(newSink*100)/100
-    }
-
-
-
-
 
 //    fun getAllStats(runes: ArrayList<Rune>) : ArrayList<String> {
 //        val stats = ArrayList<String>()
