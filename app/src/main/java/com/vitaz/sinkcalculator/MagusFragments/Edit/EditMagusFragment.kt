@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vitaz.sinkcalculator.Model.HistoryLog
 import com.vitaz.sinkcalculator.Model.SinkModifier
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
@@ -42,12 +43,16 @@ class EditMagusFragment : Fragment() {
 
         view.confirmEditing.setOnClickListener {
 
+            // update and calculate sink
             mMagusViewModel.previousSink = mMagusViewModel.currentSink
             mMagusViewModel.currentSink = calculateSink(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.previousSink)
 
-            val message = generageHistoryMessage(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.currentSink, mMagusViewModel.previousSink)
+            // update history log list
+            val message = generateHistoryMessage(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.currentSink, mMagusViewModel.previousSink)
+            addHistoryLog(mMagusViewModel.historyLogList, message, mMagusViewModel.currentSink)
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
 
+            // move to main magus fragment
             findNavController().navigate(R.id.action_editMagusFragment_to_mainMagusFragment)
         }
 
@@ -70,7 +75,7 @@ class EditMagusFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
     }
 
-    fun calculateSink(sinkModifierList: List<SinkModifier>, currentSink: Double): Double {
+    private fun calculateSink(sinkModifierList: List<SinkModifier>, currentSink: Double): Double {
         var newSink = currentSink
         var sinkDifference = 0.0
         sinkModifierList.forEach() {
@@ -81,7 +86,7 @@ class EditMagusFragment : Fragment() {
         return round(newSink*100) /100
     }
 
-    fun generageHistoryMessage (sinkModifierList: List<SinkModifier>, currentSink: Double, previousSink: Double): String {
+    private fun generateHistoryMessage (sinkModifierList: List<SinkModifier>, currentSink: Double, previousSink: Double): String {
         var historyMessage = ""
         sinkModifierList.forEach() {
             if (it.statPositive != 0) {
@@ -111,5 +116,9 @@ class EditMagusFragment : Fragment() {
             else historyMessage += ", ${currentSink - previousSink} sink"
         }
         return historyMessage
+    }
+
+    private fun addHistoryLog (logList: MutableList<HistoryLog>, message: String, currentSink: Double) {
+        logList.add(0, HistoryLog(message, currentSink))
     }
 }
