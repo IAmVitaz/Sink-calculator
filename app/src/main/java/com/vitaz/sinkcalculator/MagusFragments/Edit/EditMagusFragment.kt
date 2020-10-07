@@ -17,6 +17,7 @@ import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
 import kotlinx.android.synthetic.main.fragment_edit_magus.view.*
+import java.util.*
 import kotlin.math.round
 
 class EditMagusFragment : Fragment() {
@@ -119,6 +120,6 @@ class EditMagusFragment : Fragment() {
     }
 
     private fun addHistoryLog (logList: MutableList<HistoryLog>, message: String, currentSink: Double) {
-        logList.add(0, HistoryLog(message, currentSink))
+        logList.add(0, HistoryLog(Date(), message, currentSink))
     }
 }
