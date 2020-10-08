@@ -48,9 +48,12 @@ class EditMagusFragment : Fragment() {
             mMagusViewModel.previousSink = mMagusViewModel.currentSink
             mMagusViewModel.currentSink = calculateSink(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.previousSink)
 
+            //update outcomeStatus
+            mMagusViewModel.magusOutcome = modifyMagusOutcome(mMagusViewModel.listOfSinkModifiers)
+
             // update history log list
             val message = generateHistoryMessage(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.currentSink, mMagusViewModel.previousSink)
-            addHistoryLog(mMagusViewModel.historyLogList, message, mMagusViewModel.currentSink)
+            addHistoryLog(mMagusViewModel.historyLogList, message, mMagusViewModel.currentSink, mMagusViewModel.magusOutcome!!)
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
 
             // move to main magus fragment
@@ -113,13 +116,22 @@ class EditMagusFragment : Fragment() {
         }
         if (historyMessage != "") {
             val sinkDifference = round((currentSink - previousSink)*100)/100
-            if (sinkDifference > 0) historyMessage += ", +${currentSink - previousSink} sink"
-            else historyMessage += ", ${currentSink - previousSink} sink"
+            if (sinkDifference > 0) historyMessage += ", +$sinkDifference sink"
+            else historyMessage += ", $sinkDifference sink"
         }
         return historyMessage
     }
 
-    private fun addHistoryLog (logList: MutableList<HistoryLog>, message: String, currentSink: Double) {
-        logList.add(0, HistoryLog(Date(), message, currentSink))
+    private fun modifyMagusOutcome(sinkModifierList: List<SinkModifier>): Boolean {
+        var isOutcomePositive: Boolean = false
+        sinkModifierList.forEach() {
+            if (it.statPositive > 0 || it.statNegative > 0) isOutcomePositive = true
+        }
+        return isOutcomePositive
+    }
+
+    private fun addHistoryLog (logList: MutableList<HistoryLog>, message: String, currentSink: Double, isPositiveOutcome: Boolean) {
+
+        logList.add(0, HistoryLog(Date(), message, currentSink, isPositiveOutcome))
     }
 }

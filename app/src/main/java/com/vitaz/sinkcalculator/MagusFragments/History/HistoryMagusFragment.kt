@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.MagusFragments.Edit.EditMagusAdapter
 import com.vitaz.sinkcalculator.R
@@ -25,6 +26,11 @@ class HistoryMagusFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_history_magus, container, false)
 
         mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
+
+        view.backToMain.setOnClickListener {
+            // move to main magus fragment
+            findNavController().navigate(R.id.action_historyMagusFragment_to_mainMagusFragment)
+        }
 
         return view
     }

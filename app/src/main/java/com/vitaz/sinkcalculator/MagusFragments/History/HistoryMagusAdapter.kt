@@ -1,14 +1,16 @@
 package com.vitaz.sinkcalculator.MagusFragments.History
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.vitaz.sinkcalculator.MagusFragments.Edit.EditMagusAdapter
 import com.vitaz.sinkcalculator.Model.HistoryLog
 import com.vitaz.sinkcalculator.R
 import kotlinx.android.synthetic.main.fragment_history_magus_list_item.view.*
+import kotlinx.android.synthetic.main.fragment_stat_list_magus_item.view.*
 import java.text.SimpleDateFormat
 
 class HistoryMagusAdapter(
@@ -37,5 +39,17 @@ class HistoryMagusAdapter(
 
         holder.itemView.log.text = logList[position].message
         holder.itemView.sink.text = "${logList[position].sink} sink"
+
+        when {
+            logList[position].isPositiveOutcome == null -> {
+                holder.itemView.log.setTypeface(null, Typeface.BOLD)
+            }
+            logList[position].isPositiveOutcome!! -> {
+                holder.itemView.log.setTextColor(Color.parseColor("#008000"))
+            }
+            else -> {
+                holder.itemView.log.setTextColor(Color.parseColor("#FF0000"))
+            }
+        }
     }
 }
