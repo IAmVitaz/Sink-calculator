@@ -1,11 +1,13 @@
 package com.vitaz.sinkcalculator.MagusFragments.Edit
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -55,6 +57,9 @@ class EditMagusFragment : Fragment() {
             val message = generateHistoryMessage(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.currentSink, mMagusViewModel.previousSink)
             addHistoryLog(mMagusViewModel.historyLogList, message, mMagusViewModel.currentSink, mMagusViewModel.magusOutcome!!)
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+
+            //hide annoying keyboard
+            view.hideKeyboard()
 
             // move to main magus fragment
             findNavController().navigate(R.id.action_editMagusFragment_to_mainMagusFragment)
@@ -134,4 +139,10 @@ class EditMagusFragment : Fragment() {
 
         logList.add(0, HistoryLog(Date(), message, currentSink, isPositiveOutcome))
     }
+
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
 }
