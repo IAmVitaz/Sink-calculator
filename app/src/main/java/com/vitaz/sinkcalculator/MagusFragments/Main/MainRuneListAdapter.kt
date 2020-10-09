@@ -1,18 +1,31 @@
 package com.vitaz.sinkcalculator.MagusFragments.Main
 
+import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.Switch
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.vitaz.sinkcalculator.Model.HistoryLog
 import com.vitaz.sinkcalculator.Model.Rune
 import com.vitaz.sinkcalculator.R
+import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
 import kotlinx.android.synthetic.main.fragment_main_magus_list_item.view.*
+import java.util.*
 
 class MainRuneListAdapter(
     val context: Context,
-    val runeList: List<Rune>
+    val runeList: List<Rune>,
+    val mMagusViewModel: MagusViewModel,
+    val fragment: MainMagusFragment
 ): RecyclerView.Adapter<MainRuneListAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,6 +61,60 @@ class MainRuneListAdapter(
             val action = MainMagusFragmentDirections.actionMainMagusFragmentToEditMagusFragment(runeList[position])
             holder.itemView.findNavController().navigate(action)
         }
+
+        holder.itemView.rune_row_background.setOnLongClickListener(OnLongClickListener {
+            showDialog(runeList[position].runeName, runeList[position].sinkValue, runeList[position].minusSinkValue, runeList[position].bonus)
+            false
+        })
+
+    }
+
+    private fun showDialog(runeName: String, sinkValue: Double, minusSinkValue: Double, bonus: Int) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.critical_failure_dialog_message)
+        val runeMessage = dialog.findViewById(R.id.message1) as TextView
+        runeMessage.text = "You are about to confirm that you hit critical failure when use $runeName rune."
+        val sinkMessage = dialog.findViewById(R.id.message2) as TextView
+        val yesBtn = dialog.findViewById(R.id.yesButton) as Button
+        val noBtn = dialog.findViewById(R.id.noButton) as Button
+        val switch = dialog.findViewById(R.id.positiveSwitch) as Switch
+        val positivePower = sinkValue * bonus
+        val negativePower = minusSinkValue * bonus
+        var sink = positivePower
+        sinkMessage.text = "Your sink would be decreased by $sink sink."
+        switch.setOnCheckedChangeListener { _, switchIsChecked ->
+            if (switchIsChecked) {
+                sink = negativePower
+                sinkMessage.text = "Your sink would be decreased by $sink sink."
+            } else {
+                sink = positivePower
+                sinkMessage.text = "Your sink would be decreased by $sink sink."
+            }
+        }
+        yesBtn.setOnClickListener {
+            // update and calculate sink
+            mMagusViewModel.previousSink = mMagusViewModel.currentSink
+            mMagusViewModel.currentSink -= sink
+
+            //update outcomeStatus
+            mMagusViewModel.magusOutcome = false
+
+            // update history log list
+            val message = "-$sink sink"
+            mMagusViewModel.historyLogList.add(0, HistoryLog(Date(), message, mMagusViewModel.currentSink, mMagusViewModel.magusOutcome))
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+
+            // update current sink value in parent fragment
+            fragment.modifySinkValueOnTheMain(fragment.requireView(), mMagusViewModel)
+
+            dialog.hide()
+        }
+        noBtn.setOnClickListener {
+            dialog.hide()
+        }
+        dialog.show()
 
     }
 }

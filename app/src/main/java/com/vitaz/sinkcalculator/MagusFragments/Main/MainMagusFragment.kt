@@ -46,7 +46,7 @@ class MainMagusFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //Inflate recyclerView with data
-        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, mMagusViewModel.activeListOfRunes) }
+        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, mMagusViewModel.activeListOfRunes, mMagusViewModel, this) }
         val recyclerView = view.runeListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
