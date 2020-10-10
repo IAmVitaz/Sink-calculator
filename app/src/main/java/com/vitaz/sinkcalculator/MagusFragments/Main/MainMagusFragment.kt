@@ -1,18 +1,24 @@
 package com.vitaz.sinkcalculator.MagusFragments.Main
 
+import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.*
+import android.widget.Button
+import android.widget.Switch
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vitaz.sinkcalculator.MainActivity
+import com.vitaz.sinkcalculator.Model.HistoryLog
 import com.vitaz.sinkcalculator.R
-import com.vitaz.sinkcalculator.Services.RunesService
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
 import kotlinx.android.synthetic.main.fragment_main_magus.view.*
+import java.util.*
 
 class MainMagusFragment : Fragment() {
 
@@ -23,6 +29,10 @@ class MainMagusFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        //set menu
+        setHasOptionsMenu(true)
+
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_main_magus, container, false)
 
@@ -76,4 +86,35 @@ class MainMagusFragment : Fragment() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_magus_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_exit_magus_activity) {
+            val dialog = Dialog(requireContext())
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.dialog_message_exit_to_title)
+
+            val yesBtn = dialog.findViewById(R.id.exitYesButton) as Button
+            val noBtn = dialog.findViewById(R.id.exitNoButton) as Button
+
+            yesBtn.setOnClickListener {
+                returnToTitle()
+                dialog.hide()
+            }
+            noBtn.setOnClickListener {
+                dialog.hide()
+            }
+            dialog.show()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun returnToTitle () {
+        val returnToTitle = Intent(activity, MainActivity::class.java)
+        startActivity(returnToTitle)
+        requireActivity().finish();
+    }
 }

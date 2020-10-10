@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         newJob.setOnClickListener {
             val startNewJob = Intent(this, MagusActivity::class.java)
             startActivity(startNewJob)
+            this.finish();
         }
 
 

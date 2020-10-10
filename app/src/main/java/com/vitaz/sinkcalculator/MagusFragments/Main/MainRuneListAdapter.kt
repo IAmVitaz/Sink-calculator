@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.Model.HistoryLog
@@ -73,7 +72,7 @@ class MainRuneListAdapter(
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
-        dialog.setContentView(R.layout.critical_failure_dialog_message)
+        dialog.setContentView(R.layout.dialog_message_critical_failure)
         val runeMessage = dialog.findViewById(R.id.message1) as TextView
         runeMessage.text = "You are about to confirm that you hit critical failure when use $runeName rune."
         val sinkMessage = dialog.findViewById(R.id.message2) as TextView
