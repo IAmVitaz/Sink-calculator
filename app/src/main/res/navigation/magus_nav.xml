@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/editMagusFragment"
         android:name="com.vitaz.sinkcalculator.MagusFragments.Edit.EditMagusFragment"
-        android:label="fragment_edit_magus"
+        android:label="Apply Mage"
         tools:layout="@layout/fragment_edit_magus" >
         <action
             android:id="@+id/action_editMagusFragment_to_mainMagusFragment"
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/historyMagusFragment"
         android:name="com.vitaz.sinkcalculator.MagusFragments.History.HistoryMagusFragment"
-        android:label="fragment_history_magus"
+        android:label="History"
         tools:layout="@layout/fragment_history_magus" >
         <action
             android:id="@+id/action_historyMagusFragment_to_mainMagusFragment"
@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/runeListMagusFragment"
         android:name="com.vitaz.sinkcalculator.MagusFragments.StatList.StatListMagusFragment"
-        android:label="fragment_rune_list_magus"
+        android:label="Stat List"
         tools:layout="@layout/fragment_stat_list_magus" >
         <action
             android:id="@+id/action_runeListMagusFragment_to_mainMagusFragment"
@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/mainMagusFragment"
         android:name="com.vitaz.sinkcalculator.MagusFragments.Main.MainMagusFragment"
-        android:label="fragment_main_magus"
+        android:label="Magus Overview"
         tools:layout="@layout/fragment_main_magus" >
         <action
             android:id="@+id/action_mainMagusFragment_to_editMagusFragment"

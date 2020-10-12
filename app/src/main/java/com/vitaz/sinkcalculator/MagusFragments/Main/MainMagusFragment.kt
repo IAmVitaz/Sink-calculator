@@ -6,19 +6,16 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
-import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vitaz.sinkcalculator.MagusActivity
 import com.vitaz.sinkcalculator.MainActivity
-import com.vitaz.sinkcalculator.Model.HistoryLog
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
+import kotlinx.android.synthetic.main.fragment_main_magus.*
 import kotlinx.android.synthetic.main.fragment_main_magus.view.*
-import java.util.*
 
 class MainMagusFragment : Fragment() {
 
@@ -60,6 +57,15 @@ class MainMagusFragment : Fragment() {
         val recyclerView = view.runeListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
+
+        val itemName = (activity as MagusActivity).itemName
+        this.itemName.text = itemName
+
+        val itemCategory = (activity as MagusActivity).itemCategory
+        val itemCategoryResourceId = this.resources.getIdentifier(itemCategory, "drawable", requireContext().packageName)
+        this.itemCategory.setImageResource(itemCategoryResourceId)
+
     }
 
     fun modifySinkValueOnTheMain(view: View, viewModel: MagusViewModel) {

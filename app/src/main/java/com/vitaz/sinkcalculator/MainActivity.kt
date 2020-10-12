@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         newJob.setOnClickListener {
-            val startNewJob = Intent(this, MagusActivity::class.java)
+            val startNewJob = Intent(this, CreateNewItemActivity::class.java)
             startActivity(startNewJob)
             this.finish();
         }
