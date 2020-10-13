@@ -40,15 +40,20 @@ class HistoryMagusAdapter(
         holder.itemView.log.text = logList[position].message
         holder.itemView.sink.text = "${logList[position].sink} sink"
 
+        // change row background
+        if (position % 2 == 1) {
+            holder.itemView.historyRowBackground.setBackgroundColor(Color.parseColor("#BB2A2E27"))
+        } else holder.itemView.historyRowBackground.setBackgroundColor(Color.parseColor("#BB21251C"))
+
         when {
             logList[position].isPositiveOutcome == null -> {
                 holder.itemView.log.setTypeface(null, Typeface.BOLD)
             }
             logList[position].isPositiveOutcome!! -> {
-                holder.itemView.log.setTextColor(Color.parseColor("#008000"))
+                holder.itemView.log.setTextColor(Color.parseColor("#15AF25"))
             }
             else -> {
-                holder.itemView.log.setTextColor(Color.parseColor("#FF0000"))
+                holder.itemView.log.setTextColor(Color.parseColor("#D45E57"))
             }
         }
     }

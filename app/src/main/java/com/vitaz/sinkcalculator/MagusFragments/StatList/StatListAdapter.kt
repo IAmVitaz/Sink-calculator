@@ -1,6 +1,7 @@
 package com.vitaz.sinkcalculator.MagusFragments.StatList
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Color.parseColor
 import android.graphics.Typeface
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.Model.Stat
 import com.vitaz.sinkcalculator.R
+import kotlinx.android.synthetic.main.fragment_main_magus_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_stat_list_magus_item.view.*
 
 
@@ -50,6 +52,13 @@ class StatListAdapter (
             holder.itemView.statImage.visibility = View.INVISIBLE
         }
 
+        // change row background
+        if (statList[position].isSelected == null) {
+            holder.itemView.statRowBackground.setBackgroundColor(Color.parseColor("#00181814"))
+        } else if (position % 2 == 1) {
+            holder.itemView.statRowBackground.setBackgroundColor(Color.parseColor("#BB2A2E27"))
+        } else holder.itemView.statRowBackground.setBackgroundColor(Color.parseColor("#BB21251C"))
+
         // set add/remove button. remove if null
         holder.itemView.actionButton.visibility = View.VISIBLE
         when {
@@ -58,11 +67,11 @@ class StatListAdapter (
             }
             statList[position].isSelected!! -> {
                 holder.itemView.actionButton.setImageResource(R.drawable.remove_circle_icon)
-                holder.itemView.actionButton.drawable.setTint(parseColor("#FF0000"))
+                holder.itemView.actionButton.drawable.setTint(parseColor("#d45e57"))
             }
             else -> {
                 holder.itemView.actionButton.setImageResource(R.drawable.add_circle_icon)
-                holder.itemView.actionButton.drawable.setTint(parseColor("#008000"))
+                holder.itemView.actionButton.drawable.setTint(parseColor("#15AF25"))
             }
         }
 
