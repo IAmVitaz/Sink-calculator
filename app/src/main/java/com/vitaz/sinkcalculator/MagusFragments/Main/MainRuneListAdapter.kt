@@ -2,6 +2,7 @@ package com.vitaz.sinkcalculator.MagusFragments.Main
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
@@ -65,6 +66,10 @@ class MainRuneListAdapter(
             showDialog(runeList[position].runeName, runeList[position].sinkValue, runeList[position].minusSinkValue, runeList[position].bonus)
             false
         })
+
+        if (position % 2 == 1) {
+            holder.itemView.rune_row_background.setBackgroundColor(Color.parseColor("#BB2A2E27"))
+        } else holder.itemView.rune_row_background.setBackgroundColor(Color.parseColor("#BB21251C"))
 
     }
 

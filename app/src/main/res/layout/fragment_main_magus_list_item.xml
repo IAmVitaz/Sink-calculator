@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rune_row_background"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:background="@color/cardview_shadow_end_color">
+    android:layout_height="40dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:background="#3A3939">
 
     <ImageView
         android:id="@+id/runeImage"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -24,8 +27,11 @@
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -38,7 +44,10 @@
         android:id="@+id/guideline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:foregroundTint="#FFFFFF"
         android:orientation="vertical"
+        android:visibility="visible"
         app:layout_constraintGuide_percent="0.70" />
 
     <TextView
@@ -47,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Ini"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/runeBonus"
         app:layout_constraintEnd_toStartOf="@+id/runeBonus"
@@ -61,6 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="+10"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -74,6 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Base sink:"
+        android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/baseSink"
         app:layout_constraintEnd_toStartOf="@+id/baseSink"
@@ -87,6 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0.1"
+        android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
@@ -100,6 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Rune sink:"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/runeSink"
         app:layout_constraintHorizontal_bias="0.5"
@@ -112,10 +126,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+    <View
+        android:id="@+id/verticalLine2"
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:background="#66FFFFFF"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/verticalLine1"
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:background="#66FFFFFF"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
