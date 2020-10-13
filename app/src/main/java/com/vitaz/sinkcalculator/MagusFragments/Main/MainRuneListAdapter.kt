@@ -67,6 +67,7 @@ class MainRuneListAdapter(
             false
         })
 
+        //change row color
         if (position % 2 == 1) {
             holder.itemView.rune_row_background.setBackgroundColor(Color.parseColor("#BB2A2E27"))
         } else holder.itemView.rune_row_background.setBackgroundColor(Color.parseColor("#BB21251C"))

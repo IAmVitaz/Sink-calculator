@@ -1,6 +1,7 @@
 package com.vitaz.sinkcalculator.MagusFragments.Edit
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,6 +91,11 @@ class EditMagusAdapter (
                 } else statList[position].statNegative = it.toString().toInt()
             }
         }
+
+        //change row color
+        if (position % 2 == 1) {
+            holder.itemView.editStat_row_background.setBackgroundColor(Color.parseColor("#BB2A2E27"))
+        } else holder.itemView.editStat_row_background.setBackgroundColor(Color.parseColor("#BB21251C"))
 
         holder.itemView.statName.text = statList[position].statName
 

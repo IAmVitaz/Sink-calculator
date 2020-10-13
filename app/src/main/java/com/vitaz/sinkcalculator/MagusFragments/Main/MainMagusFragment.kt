@@ -85,7 +85,7 @@ class MainMagusFragment : Fragment() {
             }
             else -> {
                 view.sinkDynamic.visibility = View.GONE
-                view.curentSinkValue.setTextColor(Color.parseColor("#FFFFFF"))
+                view.curentSinkValue.setTextColor(Color.parseColor("#3A3939"))
             }
         }
         view.curentSinkValue.text = mMagusViewModel.currentSink.toString()

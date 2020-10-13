@@ -2,11 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editStat_row_background"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:background="@color/cardview_shadow_end_color">
+    android:background="#3A3939">
 
     <ImageView
         android:id="@+id/statImage"
@@ -19,6 +18,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/stat_initiative" />
+
+    <View
+        android:id="@+id/verticalLine3"
+        android:layout_width="1px"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:background="#66FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/negativeLayoutSwitch" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -41,11 +48,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <View
+                android:id="@+id/verticalLine4"
+                android:layout_width="1px"
+                android:layout_height="wrap_content"
+                android:background="#66FFFFFF"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/statName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Initiative"
+                android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +78,14 @@
             app:layout_constraintStart_toEndOf="@+id/statNameLayout"
             app:layout_constraintTop_toTopOf="parent">
 
+            <View
+                android:id="@+id/verticalLine1"
+                android:layout_width="1px"
+                android:layout_height="wrap_content"
+                android:background="#66FFFFFF"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <EditText
                 android:id="@+id/positiveSinkStat"
                 android:layout_width="0dp"
@@ -70,12 +94,13 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:backgroundTint="@android:color/background_dark"
+                android:backgroundTint="#FFFFFF"
                 android:ems="10"
                 android:gravity="center_horizontal"
                 android:inputType="numberSigned"
                 android:numeric="signed"
-                android:textColorLink="#000000"
+                android:textColor="#FFFFFF"
+                android:textColorLink="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/positiveSinkStatPlus"
                 app:layout_constraintStart_toEndOf="@+id/positiveSinkStatMinus"
@@ -86,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:tint="@android:color/background_dark"
+                android:tint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/positiveSinkLable"
@@ -97,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:tint="@android:color/background_dark"
+                android:tint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/positiveSinkLable"
@@ -108,6 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Positive sink"
+                android:textColor="#FFFFFF"
                 android:textSize="8sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -119,12 +145,21 @@
             android:id="@+id/negativeSinkLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginEnd="2dp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/positiveSinkLayout"
             app:layout_constraintTop_toTopOf="parent">
+
+
+            <View
+                android:id="@+id/verticalLine2"
+                android:layout_width="1px"
+                android:layout_height="wrap_content"
+                android:background="#66FFFFFF"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/negativeSinkStat"
@@ -134,12 +169,13 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:backgroundTint="@android:color/background_dark"
+                android:backgroundTint="#FFFFFF"
                 android:ems="10"
                 android:gravity="center_horizontal"
                 android:inputType="numberSigned"
                 android:numeric="signed"
-                android:textColorLink="#000000"
+                android:textColor="#FFFFFF"
+                android:textColorLink="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/negativeSinkStatPlus"
                 app:layout_constraintStart_toEndOf="@+id/negativeSinkStatMinus"
@@ -150,7 +186,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:tint="@android:color/background_dark"
+                android:tint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/negativeSinkLable"
@@ -161,7 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:tint="@android:color/background_dark"
+                android:tint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/negativeSinkLable"
@@ -172,6 +208,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Negative sink"
+                android:textColor="#FFFFFF"
                 android:textSize="8sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -185,7 +222,9 @@
         android:id="@+id/negativeLayoutSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_marginEnd="2dp"
+        android:backgroundTint="#FFFFFF"
+        android:textColorLink="#E16420"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
