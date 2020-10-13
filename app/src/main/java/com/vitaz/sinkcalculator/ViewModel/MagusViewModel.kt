@@ -20,7 +20,7 @@ class MagusViewModel: ViewModel() {
 
     var currentSink: Double = 0.0
 
-    var historyLogList = mutableListOf<HistoryLog>(HistoryLog(Date(),"Gobbal boots smithmagus", 0.0, null))
+    var historyLogList = mutableListOf<HistoryLog>()
 
     var magusOutcome: Boolean? = null
 
