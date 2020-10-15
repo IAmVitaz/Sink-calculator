@@ -1,14 +1,13 @@
 package com.vitaz.sinkcalculator
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
-import com.vitaz.sinkcalculator.Services.RunesService
+import androidx.appcompat.app.AppCompatActivity
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +17,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Set tutorial step shared prefs
+        val preferenceManager = getSharedPreferences("tutorial", Context.MODE_PRIVATE)
+        val currentTutorialValue = preferenceManager.getInt("tutorialCurrentStep", 99)
+        if (currentTutorialValue == 99) {
+            preferenceManager.edit().putInt("tutorialCurrentStep", 1).apply()
+        }
 
         newJob.setOnClickListener {
             val startNewJob = Intent(this, CreateNewItemActivity::class.java)

@@ -1,18 +1,23 @@
 package com.vitaz.sinkcalculator
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
+import android.view.Gravity
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.iterator
 import androidx.core.widget.addTextChangedListener
 import kotlinx.android.synthetic.main.activity_create_new_item.*
+import me.toptas.fancyshowcase.FancyShowCaseQueue
+import me.toptas.fancyshowcase.FancyShowCaseView
+import me.toptas.fancyshowcase.FocusShape
 
 class CreateNewItemActivity : AppCompatActivity() {
+
+    lateinit var preferenceManager: SharedPreferences
 
     var itemCategory = ""
     var itemName = ""
@@ -21,7 +26,39 @@ class CreateNewItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_new_item)
 
+        preferenceManager = getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
+        // Run item creation intro if we are on the 1st step of tutorial
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 1) {
+
+            val fancyShowCaseView1 =
+                FancyShowCaseView.Builder(this)
+                    .title("Type the name of the item you are about to mage")
+                    .focusOn(nameConstraintLayout)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .roundRectRadius(90)
+                    .enableAutoTextPosition()
+                    .build()
+
+            val fancyShowCaseView2 =
+                FancyShowCaseView.Builder(this)
+                    .title("Pick the item category")
+                    .focusOn(categoryHolder)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .roundRectRadius(90)
+                    .enableAutoTextPosition()
+                    .build()
+
+            val mQueue = FancyShowCaseQueue()
+                .add(fancyShowCaseView1)
+                .add(fancyShowCaseView2)
+            mQueue.show()
+
+            //Move to the second step
+            preferenceManager.edit().putInt("tutorialCurrentStep", 2).apply()
+        }
 
         for (image in categoryHolder) {
             image.setOnClickListener {
@@ -49,19 +86,10 @@ class CreateNewItemActivity : AppCompatActivity() {
         }
     }
 
-
     fun unselectEverything(constraintLayout: ConstraintLayout) {
         for (image in constraintLayout) {
             image.setBackgroundResource(R.drawable.item_category_background_unchecked)
         }
     }
 
-//    fun pickCategory (imageView: ImageView): String {
-//        var imageName = ""
-//
-//
-//
-//
-//        return imageName
-//    }
 }
