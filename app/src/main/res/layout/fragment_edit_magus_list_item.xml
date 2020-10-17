@@ -5,6 +5,8 @@
     android:id="@+id/editStat_row_background"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
     android:background="#3A3939">
 
     <ImageView
@@ -25,7 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="2dp"
         android:background="#66FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/negativeLayoutSwitch" />
+        app:layout_constraintEnd_toStartOf="@+id/negativeLayoutSwitch"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"

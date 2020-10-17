@@ -226,6 +226,75 @@ class MainMagusFragment : Fragment() {
             )
         }
 
+        // Run rune intro if we are on the 6th step of tutorial
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 6) {
+
+            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
+            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+                object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+
+                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
+
+                        if (viewItem != null) {
+
+                            val fancyShowCaseView1 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title("But what to do with CRITICAL FAILURES?" +
+                                            "\nIt is a magus outcome when you have no stats modified, but lose sink equal to rune power.")
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            val target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+                            val fancyShowCaseView2 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title("To apply critical failure, just PRESS AND HOLD corresponding rune row." +
+                                            "\nIn the dialog box you can choose which type of sink you age going to use (positive or negative)" +
+                                            "\nConfirm your decision to apply action." +
+                                            "\nTry it out now.")
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            val mQueue = FancyShowCaseQueue()
+                                .add(fancyShowCaseView1)
+                                .add(fancyShowCaseView2)
+                            mQueue.show()
+
+                            //Move to the 5th step
+                            preferenceManager.edit().putInt("tutorialCurrentStep", 7).apply()
+                        }
+
+                        // At this point the layout is complete
+                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                }
+            )
+        }
+
+        // Run final intro if we are on the 9th step of tutorial
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 9) {
+
+            val fancyShowCaseView1 =
+                FancyShowCaseView.Builder(requireActivity())
+                    .title("CONGRATULATIONS!" +
+                            "\n\nHere is the end of tutorial." +
+                            "\nYou have successfully learned the basics and ready to perform magus by yourself." +
+                            "\n\nTutorial can be run again from title screen anytime." +
+                            "\n\nFeel free to reach me out if you still have questions or thoughts regarding app improvements.")
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+                    .enableAutoTextPosition()
+                    .build()
+                    .show()
+
+            //Move to the third step
+            preferenceManager.edit().putInt("tutorialCurrentStep", 9).apply()
+        }
+
     }
 
     fun modifySinkValueOnTheMain(view: View, viewModel: MagusViewModel) {
@@ -283,5 +352,25 @@ class MainMagusFragment : Fragment() {
         val returnToTitle = Intent(activity, MainActivity::class.java)
         startActivity(returnToTitle)
         requireActivity().finish();
+    }
+
+    fun runSeventhStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 7) {
+            val fancyShowCaseView1 =
+                FancyShowCaseView.Builder(requireActivity())
+                    .title("Every single magus action performed in the app are being recorded as a logs." +
+                            "\nYou can check it out on the History page." +
+                            "\n\nPress History button to look at it right now.")
+                    .focusOn(moveToHistory)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .roundRectRadius(140)
+                    .enableAutoTextPosition()
+                    .build()
+                    .show()
+
+            //Move to the 8th step
+            preferenceManager.edit().putInt("tutorialCurrentStep", 8).apply()
+        }
     }
 }

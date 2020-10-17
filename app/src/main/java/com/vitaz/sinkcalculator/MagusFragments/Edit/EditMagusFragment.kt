@@ -1,12 +1,11 @@
 package com.vitaz.sinkcalculator.MagusFragments.Edit
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -18,13 +17,21 @@ import com.vitaz.sinkcalculator.Model.SinkModifier
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
+import kotlinx.android.synthetic.main.fragment_edit_magus.*
 import kotlinx.android.synthetic.main.fragment_edit_magus.view.*
+import kotlinx.android.synthetic.main.fragment_edit_magus_list_item.view.*
+import kotlinx.android.synthetic.main.fragment_main_magus.*
+import me.toptas.fancyshowcase.FancyShowCaseQueue
+import me.toptas.fancyshowcase.FancyShowCaseView
+import me.toptas.fancyshowcase.FocusShape
 import java.util.*
 import kotlin.math.round
 
 class EditMagusFragment : Fragment() {
 
     lateinit var mMagusViewModel: MagusViewModel
+
+    lateinit var preferenceManager: SharedPreferences
 
     private val args by navArgs<EditMagusFragmentArgs>()
 
@@ -82,6 +89,91 @@ class EditMagusFragment : Fragment() {
         val recyclerView = view.characteristicEditListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
+        preferenceManager = this.requireActivity().getSharedPreferences("tutorial", Context.MODE_PRIVATE)
+
+        // Run rune intro if we are on the 5th step of tutorial
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 5) {
+
+            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
+            characteristicEditListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+                object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+
+                        val viewItem = characteristicEditListRecyclerView.findViewHolderForAdapterPosition(0)
+
+                        if (viewItem != null) {
+
+                            viewItem?.itemView?.negativeLayoutSwitch?.isChecked = true
+
+                            val fancyShowCaseView1 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title("Here you can modify your stat values according to magus outcome")
+                                    .focusOn(characteristicEditListRecyclerView)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            var target: View
+
+                            target = viewItem?.itemView?.findViewById<View>(R.id.positiveSinkLayout)
+                            val fancyShowCaseView2 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title("Put you outcome results here" +
+                                            "\nIf you modify the stat which is positive on item, use this field." +
+                                            "\nValue would be positive if you gain stat on item and negative otherwise." +
+                                            "\nThis field would be most commonly used.")
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeSinkLayout)
+                            val fancyShowCaseView3 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title("Use this field ONLY if you modify the stat which is negative on the item." +
+                                            "\nNegative sink would be considered in calculations.")
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeLayoutSwitch)
+                            val fancyShowCaseView4 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title("Since negative sink would not be used very often, Negative sink block is hidden by default." +
+                                            "\nYou can show it up using this Advance Switch")
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            val mQueue = FancyShowCaseQueue()
+                                .add(fancyShowCaseView1)
+                                .add(fancyShowCaseView2)
+                                .add(fancyShowCaseView3)
+                                .add(fancyShowCaseView4)
+                            mQueue.show()
+
+                            //Move to the 5th step
+                            preferenceManager.edit().putInt("tutorialCurrentStep", 6).apply()
+                        }
+
+                        // At this point the layout is complete
+                        characteristicEditListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                }
+            )
+        }
+
     }
 
     private fun calculateSink(sinkModifierList: List<SinkModifier>, currentSink: Double): Double {
