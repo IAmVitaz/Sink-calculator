@@ -20,7 +20,27 @@ object RunesService {
         Rune("Pods", "Ra Pod", 100, 0.25, 0.125, 404, "rune_pod_ra"),
         Rune("Strength", "Stre", 1, 1.0, 1.0, 101, "rune_stre"),
         Rune("Strength", "Pa Stre", 3, 1.0, 1.0,  101, "rune_stre_pa"),
-        Rune("Strength", "Ra Stre", 10, 1.0, 1.0, 101, "rune_stre_ra")
+        Rune("Strength", "Ra Stre", 10, 1.0, 1.0, 101, "rune_stre_ra"),
+        Rune("Intelligence", "Int", 1, 1.0, 1.0, 101, "rune_int"),
+        Rune("Intelligence", "Pa Int", 3, 1.0, 1.0,  101, "rune_int_pa"),
+        Rune("Intelligence", "Ra Int", 10, 1.0, 1.0, 101, "rune_int_ra"),
+        Rune("Agility", "Agi", 1, 1.0, 1.0, 101, "rune_agi"),
+        Rune("Agility", "Pa Agi", 3, 1.0, 1.0,  101, "rune_agi_pa"),
+        Rune("Agility", "Ra Agi", 10, 1.0, 1.0, 101, "rune_agi_ra"),
+        Rune("Chance", "Cha", 1, 1.0, 1.0, 101, "rune_cha"),
+        Rune("Chance", "Pa Cha", 3, 1.0, 1.0,  101, "rune_cha_pa"),
+        Rune("Chance", "Ra Cha", 10, 1.0, 1.0, 101, "rune_cha_ra"),
+        Rune("Critical Resistance", "Cri Res", 1, 2.0, 1.0, 50, "rune_cri_res"),
+        Rune("Critical Resistance", "Pa Cri Res", 3, 2.0, 1.0,  50, "rune_cri_res_pa"),
+        Rune("Pushback Resistance", "Psh Res", 1, 2.0, 1.0, 50, "rune_psh_res"),
+        Rune("Pushback Resistance", "Pa Psh Res", 3, 2.0, 1.0,  50, "rune_psh_res_pa"),
+        Rune("Power", "Pow", 1, 2.0, 0.0, 50, "rune_pow"),
+        Rune("Power", "Pa Pow", 3, 2.0, 0.0,  50, "rune_pow_pa"),
+        Rune("Power", "Ra Pow", 10, 2.0, 0.0, 50, "rune_pow_ra"),
+        Rune("Trap Power", "Tra Per", 1, 2.0, 0.0, 50, "rune_tra_per"),
+        Rune("Trap Power", "Pa Tra Per", 3, 2.0, 0.0,  50, "rune_tra_per"),
+        Rune("Trap Power", "Ra Tra Per", 10, 2.0, 0.0, 50, "rune_tra_per")
+
 
         )
 
