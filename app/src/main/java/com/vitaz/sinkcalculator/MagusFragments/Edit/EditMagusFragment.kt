@@ -93,86 +93,7 @@ class EditMagusFragment : Fragment() {
         preferenceManager = this.requireActivity().getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
         // Run rune intro if we are on the 5th step of tutorial
-        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 5) {
-
-            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            characteristicEditListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
-                object : ViewTreeObserver.OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-
-                        val viewItem = characteristicEditListRecyclerView.findViewHolderForAdapterPosition(0)
-
-                        if (viewItem != null) {
-
-                            viewItem?.itemView?.negativeLayoutSwitch?.isChecked = true
-
-                            val fancyShowCaseView1 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("Here you can modify your stat values according to magus outcome")
-                                    .focusOn(characteristicEditListRecyclerView)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            var target: View
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.positiveSinkLayout)
-                            val fancyShowCaseView2 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("Put you outcome results here" +
-                                            "\nIf you modify the stat which is positive on item, use this field." +
-                                            "\nValue would be positive if you gain stat on item and negative otherwise." +
-                                            "\nThis field would be most commonly used.")
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeSinkLayout)
-                            val fancyShowCaseView3 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("Use this field ONLY if you modify the stat which is negative on the item." +
-                                            "\nNegative sink would be considered in calculations.")
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeLayoutSwitch)
-                            val fancyShowCaseView4 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("Since negative sink would not be used very often, Negative sink block is hidden by default." +
-                                            "\nYou can show it up using this Advance Switch")
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val mQueue = FancyShowCaseQueue()
-                                .add(fancyShowCaseView1)
-                                .add(fancyShowCaseView2)
-                                .add(fancyShowCaseView3)
-                                .add(fancyShowCaseView4)
-                            mQueue.show()
-
-                            //Move to the 5th step
-                            preferenceManager.edit().putInt("tutorialCurrentStep", 6).apply()
-                        }
-
-                        // At this point the layout is complete
-                        characteristicEditListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    }
-                }
-            )
-        }
+        runFifthStepOfTutorial()
 
     }
 
@@ -235,6 +156,82 @@ class EditMagusFragment : Fragment() {
     fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    private fun runFifthStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 5) {
+
+            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
+            characteristicEditListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+                object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+
+                        val viewItem = characteristicEditListRecyclerView.findViewHolderForAdapterPosition(0)
+
+                        if (viewItem != null) {
+
+                            viewItem?.itemView?.negativeLayoutSwitch?.isChecked = true
+
+                            val fancyShowCaseView1 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_5_1))
+                                    .focusOn(characteristicEditListRecyclerView)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            var target: View = viewItem?.itemView?.findViewById<View>(R.id.positiveSinkLayout)
+                            val fancyShowCaseView2 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_5_2))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeSinkLayout)
+                            val fancyShowCaseView3 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_5_3))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeLayoutSwitch)
+                            val fancyShowCaseView4 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_5_4))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            val mQueue = FancyShowCaseQueue()
+                                .add(fancyShowCaseView1)
+                                .add(fancyShowCaseView2)
+                                .add(fancyShowCaseView3)
+                                .add(fancyShowCaseView4)
+                            mQueue.show()
+
+                            //Move to the 5th step
+                            preferenceManager.edit().putInt("tutorialCurrentStep", 6).apply()
+                        }
+
+                        // At this point the layout is complete
+                        characteristicEditListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                }
+            )
+        }
     }
 
 }

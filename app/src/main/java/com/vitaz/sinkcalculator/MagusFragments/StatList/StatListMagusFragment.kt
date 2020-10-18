@@ -66,31 +66,35 @@ class StatListMagusFragment : Fragment() {
         preferenceManager = this.requireActivity().getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
         // Run stat list intro if we are on the 3st step of tutorial
+        runThirdStepOfTutorial()
+    }
+
+    private fun runThirdStepOfTutorial() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 3) {
 
             //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            recyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+            statListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
                 object : OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
 
-                        val viewItem = recyclerView.findViewHolderForAdapterPosition(2)
+                        val viewItem = statListRecyclerView.findViewHolderForAdapterPosition(2)
 
                         if (viewItem != null) {
 
                             val fancyShowCaseView1 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title("All available stats are shown in the list")
-                                    .focusOn(recyclerView)
+                                    .title(getString(R.string.tutorial_3_1))
+                                    .focusOn(statListRecyclerView)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                                     .roundRectRadius(90)
                                     .enableAutoTextPosition()
                                     .build()
 
-                            val target = viewItem?.itemView?.findViewById<View>(R.id.statRowBackground)
+                            var target = viewItem?.itemView?.findViewById<View>(R.id.statRowBackground)
                             val fancyShowCaseView2 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title("Pick only the ones used in the magus process of current item")
+                                    .title(getString(R.string.tutorial_3_2))
                                     .focusOn(target)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -98,24 +102,21 @@ class StatListMagusFragment : Fragment() {
                                     .enableAutoTextPosition()
                                     .build()
 
-                            val target2 = viewItem?.itemView?.findViewById<View>(R.id.actionButton)
+                            target = viewItem?.itemView?.findViewById<View>(R.id.actionButton)
                             val fancyShowCaseView3 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title(
-                                        "To do so just click '+' button on desired stats and they would move to Selected section" +
-                                                "\nTo deselect the stat just click '-' button"
-                                    )
-                                    .focusOn(target2)
+                                    .title(getString(R.string.tutorial_3_3))
+                                    .focusOn(target)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                                     .roundRectRadius(140)
-                                    .focusCircleRadiusFactor(1.5)
+                                    .focusCircleRadiusFactor(2.0)
                                     .enableAutoTextPosition()
                                     .build()
 
                             val fancyShowCaseView4 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title("Once everything is set, confirm your choice by clicking Apply button")
+                                    .title(getString(R.string.tutorial_3_4))
                                     .focusOn(moveToMain)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -136,10 +137,11 @@ class StatListMagusFragment : Fragment() {
                         }
 
                         // At this point the layout is complete
-                        recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        statListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 }
             )
         }
     }
+
 }

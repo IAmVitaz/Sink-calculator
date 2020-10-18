@@ -3,4 +3,64 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    //Tutorial:
+    <string name="tutorial_1_1">Type the name of the item you are about to mage.</string>
+    <string name="tutorial_1_2">Pick the item category.</string>
+    <string name="tutorial_2_1">Here is the overview panel.</string>
+
+    <string name="tutorial_2_2">Current sink.
+                                \n\nIt is the main parameter in the whole app.
+                                \n\nSink value would be different in color depending on changes during the maging.</string>
+    <string name="tutorial_2_3">Available runes would be listed here:</string>
+    <string name="tutorial_2_4">However no characteristics have been chosen yet.
+                                \nLet\'s pick something!
+                                \n\nPress \'Edit Rune List\' button.</string>
+
+    <string name="tutorial_3_1">All available stats are shown in the list:</string>
+    <string name="tutorial_3_2">Pick only the ones used in the magus process of current item.</string>
+    <string name="tutorial_3_3">To do so just click \'+\' button on desired stats and they would move to \'Selected\' section.
+                                \nTo deselect the stat just click \'-\' button.</string>
+    <string name="tutorial_3_4">Once everything is set, confirm your choice by clicking \'Apply\' button.</string>
+
+    <string name="tutorial_4_1">All available runes corresponding to stat selected are shown in the list:</string>
+    <string name="tutorial_4_2">This shows the rune name and number of stats that would be added to item on success.</string>
+    <string name="tutorial_4_3">This shows the rune base positive sink.
+                                \n\nIt is specific to the stat.</string>
+    <string name="tutorial_4_4">This shows the rune total positive sink.
+                                \n\nBasically it is the amount of sink being consumed to be able to apply this particular rune.</string>
+    <string name="tutorial_4_5">To apply the rune and calculate outcome press on the rune row.
+                                \n\nThat is corresponding to regular magus action in the game when you have some stats added and removed.
+                                \n\nTry it out now!</string>
+
+    <string name="tutorial_5_1">Here you can modify your stat values according to magus outcome</string>
+    <string name="tutorial_5_2">If you modify the stat which is positive on item, use this field to put outcome results.
+                                \n\nValue would be positive if you gain stat on item and negative otherwise.
+                                \n\nThis field would be most commonly used.</string>
+    <string name="tutorial_5_3">Use this field ONLY if you modify the stat which is negative on the item.
+                                \n\nNegative sink would be considered in calculations in this case.</string>
+    <string name="tutorial_5_4">Since negative sink would not be used very often, \'Negative sink block\' is hidden by default.
+                                \n\nYou can show it up using this Advance Switch</string>
+    <string name="tutorial_6_1">But what to do with CRITICAL FAILURES?
+                                \n\nIt is a magus outcome when you have no stats modified, but lose sink equal to rune power.</string>
+    <string name="tutorial_6_2">To apply critical failure, just PRESS AND HOLD corresponding rune row.
+                                \n\nIn the dialog box with switch you can choose which type of sink you age going to use (positive or negative).
+                                \n\nConfirm your decision to apply action.
+                                \n\nTry it out now!</string>
+    <string name="tutorial_7_1">Every single magus action performed in the app are being recorded as a logs.
+                                \n\nYou can check it out on the History page.
+                                \n\nPress \'History\' button to look at it right now!</string>
+    <string name="tutorial_8_1">Logs are being shown here.</string>
+    <string name="tutorial_8_2">This is the very beginning on the history.
+                                \n\nThe most recent row is on the top.</string>
+    <string name="tutorial_8_3">Here is the history message.</string>
+    <string name="tutorial_8_4">Here is the result sink.</string>
+    <string name="tutorial_8_5">History messages with positive output (where the target stat has been increased) would be green.
+                                \n\nNegative output (all stats or just sink went down) would be red.</string>
+    <string name="tutorial_8_6">Now press \'Back\' button to move back to the main screen.</string>
+    <string name="tutorial_9_1">CONGRATULATIONS!
+                                \n\nHere is the end of tutorial.
+                                \nYou have successfully learned the basics and ready to perform magus by yourself.
+                                \n\nTutorial can be run again from title screen anytime.
+                                \n\nFeel free to reach me out if you still have questions or thoughts regarding app improvements.</string>
 </resources>

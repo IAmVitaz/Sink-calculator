@@ -76,224 +76,17 @@ class MainMagusFragment : Fragment() {
         preferenceManager = this.requireActivity().getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
         // Run Magus overview intro if we are on the 2st step of tutorial
-        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 2) {
-
-            val fancyShowCaseView1 =
-                FancyShowCaseView.Builder(requireActivity())
-                    .title("Here is the overview panel")
-                    .focusOn(overviewPanel)
-                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                    .roundRectRadius(90)
-                    .enableAutoTextPosition()
-                    .build()
-
-            val fancyShowCaseView2 =
-                FancyShowCaseView.Builder(requireActivity())
-                    .title("Current sink. " +
-                            "\nIt is the main parameter in the whole app" +
-                            "\nSink value would be different in color depending on changes during the maging")
-                    .focusOn(sinkLayourMain)
-                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                    .enableAutoTextPosition()
-                    .build()
-
-            val fancyShowCaseView3 =
-                FancyShowCaseView.Builder(requireActivity())
-                    .title("Available runes would be listed here")
-                    .focusOn(runeListRecyclerView)
-                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER_HORIZONTAL)
-                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                    .roundRectRadius(90)
-                    .focusAnimationMaxValue(40)
-                    .enableAutoTextPosition()
-                    .build()
-
-            val fancyShowCaseView4 =
-                FancyShowCaseView.Builder(requireActivity())
-                    .title("However no characteristics have been chosen yet." +
-                            "\nLet's pick something!" +
-                            "\nPress 'Edit Rune List' button")
-                    .focusOn(editRuneList)
-                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                    .roundRectRadius(90)
-                    .focusAnimationMaxValue(40)
-                    .enableAutoTextPosition()
-                    .build()
-
-            val mQueue = FancyShowCaseQueue()
-                .add(fancyShowCaseView1)
-                .add(fancyShowCaseView2)
-                .add(fancyShowCaseView3)
-                .add(fancyShowCaseView4)
-            mQueue.show()
-
-            //Move to the third step
-            preferenceManager.edit().putInt("tutorialCurrentStep", 3).apply()
-        }
+        runSecondStepOfTutorial()
 
         // Run rune intro if we are on the 4th step of tutorial
-        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 4) {
+        runFourthStepOfTutorial()
 
-            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
-                object : ViewTreeObserver.OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-
-                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
-
-                        if (viewItem != null) {
-
-                            val fancyShowCaseView1 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("All available runes corresponding to stat selected are shown in the list")
-                                    .focusOn(runeListRecyclerView)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val target = viewItem?.itemView?.findViewById<View>(R.id.runeLayoutMain)
-                            val fancyShowCaseView2 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("This shows the rune name and number of stats that would be added to item on success")
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val target2 = viewItem?.itemView?.findViewById<View>(R.id.baseSinkLayoutMain)
-                            val fancyShowCaseView3 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(
-                                        "This shows the rune base positive sink. " +
-                                                "\nIt is specific to the stat"
-                                    )
-                                    .focusOn(target2)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(140)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val target3 = viewItem?.itemView?.findViewById<View>(R.id.runeSinkLayoutMain)
-                            val fancyShowCaseView4 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(
-                                        "This shows the rune total positive sink. " +
-                                                "\nBasically it is the amount of sink being consumed to be able to apply this particular rune"
-                                    )
-                                    .focusOn(target3)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(140)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val target4 = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            val fancyShowCaseView5 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("To apply the rune and calculate outcome press on the rune" +
-                                            "\nThat is corresponding to regular magus action in the game when you have some stats added and removed" +
-                                            "\nTry it now!")
-                                    .focusOn(target4)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(50)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val mQueue = FancyShowCaseQueue()
-                                .add(fancyShowCaseView1)
-                                .add(fancyShowCaseView2)
-                                .add(fancyShowCaseView3)
-                                .add(fancyShowCaseView4)
-                                .add(fancyShowCaseView5)
-                            mQueue.show()
-
-                            //Move to the 5th step
-                            preferenceManager.edit().putInt("tutorialCurrentStep", 5).apply()
-                        }
-
-                        // At this point the layout is complete
-                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    }
-                }
-            )
-        }
-
-        // Run rune intro if we are on the 6th step of tutorial
-        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 6) {
-
-            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
-                object : ViewTreeObserver.OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-
-                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
-
-                        if (viewItem != null) {
-
-                            val fancyShowCaseView1 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("But what to do with CRITICAL FAILURES?" +
-                                            "\nIt is a magus outcome when you have no stats modified, but lose sink equal to rune power.")
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            val fancyShowCaseView2 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title("To apply critical failure, just PRESS AND HOLD corresponding rune row." +
-                                            "\nIn the dialog box you can choose which type of sink you age going to use (positive or negative)" +
-                                            "\nConfirm your decision to apply action." +
-                                            "\nTry it out now.")
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val mQueue = FancyShowCaseQueue()
-                                .add(fancyShowCaseView1)
-                                .add(fancyShowCaseView2)
-                            mQueue.show()
-
-                            //Move to the 5th step
-                            preferenceManager.edit().putInt("tutorialCurrentStep", 7).apply()
-                        }
-
-                        // At this point the layout is complete
-                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    }
-                }
-            )
-        }
+        // Run critical failure intro if we are on the 6th step of tutorial
+        runSixthStepOfTutorial()
+        //7th step is being run from MainRuneListAdapter
 
         // Run final intro if we are on the 9th step of tutorial
-        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 9) {
-
-            val fancyShowCaseView1 =
-                FancyShowCaseView.Builder(requireActivity())
-                    .title("CONGRATULATIONS!" +
-                            "\n\nHere is the end of tutorial." +
-                            "\nYou have successfully learned the basics and ready to perform magus by yourself." +
-                            "\n\nTutorial can be run again from title screen anytime." +
-                            "\n\nFeel free to reach me out if you still have questions or thoughts regarding app improvements.")
-                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                    .enableAutoTextPosition()
-                    .build()
-                    .show()
-
-            //Move to the third step
-            preferenceManager.edit().putInt("tutorialCurrentStep", 9).apply()
-        }
+        runNinthStepOfTutorial()
 
     }
 
@@ -353,14 +146,200 @@ class MainMagusFragment : Fragment() {
         startActivity(returnToTitle)
         requireActivity().finish();
     }
+    
+    private fun runSecondStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 2) {
+
+            val fancyShowCaseView1 =
+                FancyShowCaseView.Builder(requireActivity())
+                    .title(getString(R.string.tutorial_2_1))
+                    .focusOn(overviewPanel)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .roundRectRadius(90)
+                    .enableAutoTextPosition()
+                    .build()
+
+            val fancyShowCaseView2 =
+                FancyShowCaseView.Builder(requireActivity())
+                    .title(getString(R.string.tutorial_2_2))
+                    .focusOn(sinkLayourMain)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                    .enableAutoTextPosition()
+                    .build()
+
+            val fancyShowCaseView3 =
+                FancyShowCaseView.Builder(requireActivity())
+                    .title(getString(R.string.tutorial_2_3))
+                    .focusOn(runeListRecyclerView)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER_HORIZONTAL)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .roundRectRadius(90)
+                    .focusAnimationMaxValue(40)
+                    .enableAutoTextPosition()
+                    .build()
+
+            val fancyShowCaseView4 =
+                FancyShowCaseView.Builder(requireActivity())
+                    .title(getString(R.string.tutorial_2_4))
+                    .focusOn(editRuneList)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .roundRectRadius(90)
+                    .focusAnimationMaxValue(40)
+                    .enableAutoTextPosition()
+                    .build()
+
+            val mQueue = FancyShowCaseQueue()
+                .add(fancyShowCaseView1)
+                .add(fancyShowCaseView2)
+                .add(fancyShowCaseView3)
+                .add(fancyShowCaseView4)
+            mQueue.show()
+
+            //Move to the third step
+            preferenceManager.edit().putInt("tutorialCurrentStep", 3).apply()
+        }
+    }
+
+    private fun runFourthStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 4) {
+
+            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
+            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+                object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+
+                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
+
+                        if (viewItem != null) {
+
+                            val fancyShowCaseView1 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_4_1))
+                                    .focusOn(runeListRecyclerView)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            var target = viewItem?.itemView?.findViewById<View>(R.id.runeLayoutMain)
+                            val fancyShowCaseView2 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_4_2))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            target = viewItem?.itemView?.findViewById<View>(R.id.baseSinkLayoutMain)
+                            val fancyShowCaseView3 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_4_3))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(140)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            target = viewItem?.itemView?.findViewById<View>(R.id.runeSinkLayoutMain)
+                            val fancyShowCaseView4 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_4_4))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(140)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+                            val fancyShowCaseView5 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_4_5))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(50)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            val mQueue = FancyShowCaseQueue()
+                                .add(fancyShowCaseView1)
+                                .add(fancyShowCaseView2)
+                                .add(fancyShowCaseView3)
+                                .add(fancyShowCaseView4)
+                                .add(fancyShowCaseView5)
+                            mQueue.show()
+
+                            //Move to the 5th step
+                            preferenceManager.edit().putInt("tutorialCurrentStep", 5).apply()
+                        }
+
+                        // At this point the layout is complete
+                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                }
+            )
+        }
+    }
+
+    private fun runSixthStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 6) {
+
+            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
+            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+                object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+
+                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
+
+                        if (viewItem != null) {
+
+                            val fancyShowCaseView1 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_6_1))
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            val target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+                            val fancyShowCaseView2 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_6_2))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+
+                            val mQueue = FancyShowCaseQueue()
+                                .add(fancyShowCaseView1)
+                                .add(fancyShowCaseView2)
+                            mQueue.show()
+
+                            //Move to the 5th step
+                            preferenceManager.edit().putInt("tutorialCurrentStep", 7).apply()
+                        }
+
+                        // At this point the layout is complete
+                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                }
+            )
+        }
+    }
 
     fun runSeventhStepOfTutorial() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 7) {
             val fancyShowCaseView1 =
                 FancyShowCaseView.Builder(requireActivity())
-                    .title("Every single magus action performed in the app are being recorded as a logs." +
-                            "\nYou can check it out on the History page." +
-                            "\n\nPress History button to look at it right now.")
+                    .title(getString(R.string.tutorial_7_1))
                     .focusOn(moveToHistory)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -371,6 +350,22 @@ class MainMagusFragment : Fragment() {
 
             //Move to the 8th step
             preferenceManager.edit().putInt("tutorialCurrentStep", 8).apply()
+        }
+    }
+
+    private fun runNinthStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 9) {
+
+            val fancyShowCaseView1 =
+                FancyShowCaseView.Builder(requireActivity())
+                    .title(getString(R.string.tutorial_9_1))
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+                    .enableAutoTextPosition()
+                    .build()
+                    .show()
+
+            //Move to the third step
+            preferenceManager.edit().putInt("tutorialCurrentStep", 0).apply()
         }
     }
 }

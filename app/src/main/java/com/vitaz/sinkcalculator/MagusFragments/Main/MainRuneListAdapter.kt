@@ -114,7 +114,7 @@ class MainRuneListAdapter(
             // update current sink value in parent fragment
             fragment.modifySinkValueOnTheMain(fragment.requireView(), mMagusViewModel)
 
-            // check if tutorial is required
+            // Run intro to history intro if we are on the 7th step of tutorial
             fragment.runSeventhStepOfTutorial()
 
             dialog.hide()

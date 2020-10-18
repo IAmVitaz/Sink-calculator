@@ -53,6 +53,11 @@ class HistoryMagusFragment : Fragment() {
         preferenceManager = this.requireActivity().getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
         // Run history intro if we are on the 8th step of tutorial
+        runEighthStepOfTutorial()
+
+    }
+
+    private fun runEighthStepOfTutorial() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 8) {
 
             //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
@@ -62,7 +67,7 @@ class HistoryMagusFragment : Fragment() {
 
                         val fancyShowCaseView1 =
                             FancyShowCaseView.Builder(requireActivity())
-                                .title("Here are all the history logs corresponding to current item.")
+                                .title(getString(R.string.tutorial_8_1))
                                 .focusOn(historyRecyclerView)
                                 .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                 .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -74,13 +79,10 @@ class HistoryMagusFragment : Fragment() {
 
                         if (viewItem != null) {
 
-                            var target: View
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.historyRowBackground)
-                            val fancyShowCaseView1 =
+                            var target: View = viewItem?.itemView?.findViewById<View>(R.id.historyRowBackground)
+                            val fancyShowCaseView2 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title("This is the very beginning on the history." +
-                                            "The most recent row is on the top.")
+                                    .title(getString(R.string.tutorial_8_2))
                                     .focusOn(target)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -89,9 +91,9 @@ class HistoryMagusFragment : Fragment() {
                                     .build()
 
                             target = viewItem?.itemView?.findViewById<View>(R.id.log)
-                            val fancyShowCaseView2 =
+                            val fancyShowCaseView3 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title("Here is the history message")
+                                    .title(getString(R.string.tutorial_8_3))
                                     .focusOn(target)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -100,9 +102,9 @@ class HistoryMagusFragment : Fragment() {
                                     .build()
 
                             target = viewItem?.itemView?.findViewById<View>(R.id.sink)
-                            val fancyShowCaseView3 =
+                            val fancyShowCaseView4 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title("Here is the result sink")
+                                    .title(getString(R.string.tutorial_8_4))
                                     .focusOn(target)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -110,17 +112,16 @@ class HistoryMagusFragment : Fragment() {
                                     .enableAutoTextPosition()
                                     .build()
 
-                            val fancyShowCaseView4 =
+                            val fancyShowCaseView5 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title("History messages with positive output (where the target stat has been increased) would be green." +
-                                            "\n\nNegative output (all stats or just sink went down) would be red.")
+                                    .title(getString(R.string.tutorial_8_5))
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
                                     .enableAutoTextPosition()
                                     .build()
 
-                            val fancyShowCaseView5 =
+                            val fancyShowCaseView6 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title("Press Back button to move back to main screen.")
+                                    .title(getString(R.string.tutorial_8_6))
                                     .focusOn(backToMain)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -134,6 +135,7 @@ class HistoryMagusFragment : Fragment() {
                                 .add(fancyShowCaseView3)
                                 .add(fancyShowCaseView4)
                                 .add(fancyShowCaseView5)
+                                .add(fancyShowCaseView6)
                             mQueue.show()
 
                             //Move to the 9th step

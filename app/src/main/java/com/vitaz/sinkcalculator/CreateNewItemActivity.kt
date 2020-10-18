@@ -29,36 +29,7 @@ class CreateNewItemActivity : AppCompatActivity() {
         preferenceManager = getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
         // Run item creation intro if we are on the 1st step of tutorial
-        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 1) {
-
-            val fancyShowCaseView1 =
-                FancyShowCaseView.Builder(this)
-                    .title("Type the name of the item you are about to mage")
-                    .focusOn(nameConstraintLayout)
-                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                    .roundRectRadius(90)
-                    .enableAutoTextPosition()
-                    .build()
-
-            val fancyShowCaseView2 =
-                FancyShowCaseView.Builder(this)
-                    .title("Pick the item category")
-                    .focusOn(categoryHolder)
-                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                    .roundRectRadius(90)
-                    .enableAutoTextPosition()
-                    .build()
-
-            val mQueue = FancyShowCaseQueue()
-                .add(fancyShowCaseView1)
-                .add(fancyShowCaseView2)
-            mQueue.show()
-
-            //Move to the second step
-            preferenceManager.edit().putInt("tutorialCurrentStep", 2).apply()
-        }
+        runFirstStepOfTutorial()
 
         for (image in categoryHolder) {
             image.setOnClickListener {
@@ -86,9 +57,42 @@ class CreateNewItemActivity : AppCompatActivity() {
         }
     }
 
-    fun unselectEverything(constraintLayout: ConstraintLayout) {
+    private fun unselectEverything(constraintLayout: ConstraintLayout) {
         for (image in constraintLayout) {
             image.setBackgroundResource(R.drawable.item_category_background_unchecked)
+        }
+    }
+
+    private fun runFirstStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 1) {
+
+            val fancyShowCaseView1 =
+                FancyShowCaseView.Builder(this)
+                    .title(getString(R.string.tutorial_1_1))
+                    .focusOn(nameConstraintLayout)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .roundRectRadius(90)
+                    .enableAutoTextPosition()
+                    .build()
+
+            val fancyShowCaseView2 =
+                FancyShowCaseView.Builder(this)
+                    .title(getString(R.string.tutorial_1_2))
+                    .focusOn(categoryHolder)
+                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                    .roundRectRadius(90)
+                    .enableAutoTextPosition()
+                    .build()
+
+            val mQueue = FancyShowCaseQueue()
+                .add(fancyShowCaseView1)
+                .add(fancyShowCaseView2)
+            mQueue.show()
+
+            //Move to the second step
+            preferenceManager.edit().putInt("tutorialCurrentStep", 2).apply()
         }
     }
 
