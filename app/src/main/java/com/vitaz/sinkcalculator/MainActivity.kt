@@ -25,12 +25,18 @@ class MainActivity : AppCompatActivity() {
             preferenceManager.edit().putInt("tutorialCurrentStep", 1).apply()
         }
 
-        newJob.setOnClickListener {
+        runTutorial.setOnClickListener {
+            preferenceManager.edit().putInt("tutorialCurrentStep", 1).apply()
             val startNewJob = Intent(this, CreateNewItemActivity::class.java)
             startActivity(startNewJob)
             this.finish();
         }
 
+        newJob.setOnClickListener {
+            val startNewJob = Intent(this, CreateNewItemActivity::class.java)
+            startActivity(startNewJob)
+            this.finish();
+        }
 
     }
 
