@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rune_row_background"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="45dp"
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
     android:background="#3A3939">
@@ -12,9 +12,9 @@
     <ImageView
         android:id="@+id/runeImage"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:background="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
@@ -77,10 +77,13 @@
 
         <TextView
             android:id="@+id/runeName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:maxLines="2"
+            android:minLines="1"
             android:text="Ini"
+            android:textAlignment="viewStart"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
