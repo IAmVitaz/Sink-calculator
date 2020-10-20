@@ -27,7 +27,9 @@ class MagusActivity : AppCompatActivity() {
 
         itemName = intent!!.getStringExtra("itemName")
 
-        mMagusViewModel.historyLogList.add(HistoryLog(Date(),"$itemName smithmagus", 0.0, null))
+        if (mMagusViewModel.historyLogList.size == 0)  {
+            mMagusViewModel.historyLogList.add(HistoryLog(Date(),"$itemName smithmagus", 0.0, null))
+        }
 
         setupActionBarWithNavController(findNavController(R.id.navHostFragment))
 
