@@ -191,7 +191,7 @@ object RunesService {
         statList.forEach() statArray@ {Stat ->
             runes.forEach() {Rune ->
                 if (Stat.isSelected == true && Stat.statName.equals(Rune.statName)){
-                    newSinkModifierList.add(SinkModifier(Stat.statName, Stat.statImage!!, Rune.sinkValue, Rune.minusSinkValue, 0, 0))
+                    newSinkModifierList.add(SinkModifier(Stat.statName, Stat.statImage!!, Rune.sinkValue, Rune.minusSinkValue, 0, 0, false))
                     return@statArray
                 }
             }

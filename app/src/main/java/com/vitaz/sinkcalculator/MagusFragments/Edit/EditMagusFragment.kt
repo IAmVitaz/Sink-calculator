@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.Model.HistoryLog
+import com.vitaz.sinkcalculator.Model.Rune
 import com.vitaz.sinkcalculator.Model.SinkModifier
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
@@ -51,11 +52,20 @@ class EditMagusFragment : Fragment() {
         mMagusViewModel.listOfSinkModifiers.clear()
         mMagusViewModel.listOfSinkModifiers = RunesService.createNewListOfSinkModifiers(mMagusViewModel.activeListOfStats)
 
+        // Extract passed argument about rune selected:
+        val selectedRuneName = args.selectedRune.runeName
+        val selectedRuneImage = args.selectedRune.image
+
+        view.runeNameHeader.text = selectedRuneName
+        val resourceId = requireContext().resources.getIdentifier(selectedRuneImage, "drawable", requireContext().packageName)
+        view.runeImageHeader.setImageResource(resourceId)
+
+        //Actions on confirm button click:
         view.confirmEditing.setOnClickListener {
 
             // update and calculate sink
             mMagusViewModel.previousSink = mMagusViewModel.currentSink
-            mMagusViewModel.currentSink = calculateSink(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.previousSink)
+            mMagusViewModel.currentSink = calculateSink(mMagusViewModel.listOfSinkModifiers, mMagusViewModel.previousSink, args.selectedRune)
 
             //update outcomeStatus
             mMagusViewModel.magusOutcome = modifyMagusOutcome(mMagusViewModel.listOfSinkModifiers)
@@ -71,13 +81,6 @@ class EditMagusFragment : Fragment() {
             // move to main magus fragment
             findNavController().navigate(R.id.action_editMagusFragment_to_mainMagusFragment)
         }
-
-        // Extract passed argument about rune selected:
-        view.runeNameHeader.text = args.selectedRune.runeName
-        val resourceId = requireContext().resources.getIdentifier(args.selectedRune.image, "drawable", requireContext().packageName)
-        view.runeImageHeader.setImageResource(resourceId)
-
-
 
         return view
     }
@@ -97,11 +100,22 @@ class EditMagusFragment : Fragment() {
 
     }
 
-    private fun calculateSink(sinkModifierList: List<SinkModifier>, currentSink: Double): Double {
+    private fun calculateSink(sinkModifierList: List<SinkModifier>, currentSink: Double, selectedRune: Rune): Double {
         var newSink = currentSink
         var sinkDifference = 0.0
         sinkModifierList.forEach() {
-            sinkDifference += (it.sinkPositiveValue * it.statPositive) + (it.sinkNegativeValue * it.statNegative)
+
+            sinkDifference += when {
+                (it.statName == selectedRune.statName) and (it.statPositive == 0) and (it.statNegative == 0) and !it.isNegative -> {
+                    it.sinkPositiveValue * selectedRune.bonus
+                }
+                (it.statName == selectedRune.statName) and(it.statPositive == 0) and (it.statNegative == 0) and it.isNegative -> {
+                    it.sinkNegativeValue * selectedRune.bonus
+                }
+                else -> {
+                    (it.sinkPositiveValue * it.statPositive) + (it.sinkNegativeValue * it.statNegative)
+                }
+            }
         }
         Log.d("Sink difference", sinkDifference.toString())
         newSink -= sinkDifference
@@ -132,11 +146,15 @@ class EditMagusFragment : Fragment() {
                 }
             }
         }
-        if (historyMessage != "") {
-            val sinkDifference = round((currentSink - previousSink)*100)/100
-            if (sinkDifference > 0) historyMessage += ", +$sinkDifference sink"
-            else historyMessage += ", $sinkDifference sink"
+
+        val sinkDifference = round((currentSink - previousSink)*100)/100
+        when {
+            (historyMessage == "") && (sinkDifference > 0) -> historyMessage += "+$sinkDifference sink"
+            (historyMessage == "") && (sinkDifference <= 0) -> historyMessage += "$sinkDifference sink"
+            sinkDifference > 0 -> historyMessage += ", +$sinkDifference sink"
+            else -> historyMessage += ", $sinkDifference sink"
         }
+
         return historyMessage
     }
 

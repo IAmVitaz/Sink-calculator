@@ -6,7 +6,8 @@ class SinkModifier(
     val sinkPositiveValue: Double,
     val sinkNegativeValue: Double,
     var statPositive: Int,
-    var statNegative: Int
+    var statNegative: Int,
+    var isNegative: Boolean
 ) {
 
     override fun toString(): String {

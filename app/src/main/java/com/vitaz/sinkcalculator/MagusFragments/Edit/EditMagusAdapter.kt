@@ -49,9 +49,11 @@ class EditMagusAdapter (
             if (switchIsChecked) {
                 holder.itemView.negativeSinkLayout.visibility = View.VISIBLE
                 holder.itemView.statNameLayout.visibility = View.GONE
+                statList[position].isNegative = true
             } else {
                 holder.itemView.negativeSinkLayout.visibility = View.GONE
                 holder.itemView.statNameLayout.visibility = View.VISIBLE
+                statList[position].isNegative = false
             }
         }
 
