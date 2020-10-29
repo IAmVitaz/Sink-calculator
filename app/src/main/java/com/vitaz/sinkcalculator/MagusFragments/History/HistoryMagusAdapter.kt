@@ -48,6 +48,8 @@ class HistoryMagusAdapter(
         when {
             logList[position].isPositiveOutcome == null -> {
                 holder.itemView.log.setTypeface(null, Typeface.BOLD)
+                holder.itemView.log.setTextColor(Color.parseColor("#FFFFFF"))
+                holder.setIsRecyclable(false)
             }
             logList[position].isPositiveOutcome!! -> {
                 holder.itemView.log.setTextColor(Color.parseColor("#15AF25"))
