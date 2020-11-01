@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.Model.HistoryLog
 import com.vitaz.sinkcalculator.R
@@ -52,7 +53,7 @@ class HistoryMagusAdapter(
                 holder.setIsRecyclable(false)
             }
             logList[position].isPositiveOutcome!! -> {
-                holder.itemView.log.setTextColor(Color.parseColor("#15AF25"))
+                holder.itemView.log.setTextColor(ContextCompat.getColor(context, R.color.success))
             }
             else -> {
                 holder.itemView.log.setTextColor(Color.parseColor("#D45E57"))

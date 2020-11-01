@@ -4,24 +4,35 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Resources
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.MagusActivity
 import com.vitaz.sinkcalculator.MainActivity
+import com.vitaz.sinkcalculator.Model.HistoryLog
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
 import kotlinx.android.synthetic.main.fragment_main_magus.*
 import kotlinx.android.synthetic.main.fragment_main_magus.view.*
-import kotlinx.android.synthetic.main.fragment_stat_list_magus.*
 import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
 import me.toptas.fancyshowcase.FocusShape
+import java.util.*
+
 
 class MainMagusFragment : Fragment() {
 
@@ -88,6 +99,113 @@ class MainMagusFragment : Fragment() {
         // Run final intro if we are on the 9th step of tutorial
         runNinthStepOfTutorial()
 
+        // implement swipes:
+        val myCallback = object: ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if (direction == ItemTouchHelper.LEFT) {
+                    swipeMagusAction(mMagusViewModel, viewHolder.adapterPosition, "success")
+                } else if (direction == ItemTouchHelper.RIGHT) {
+                    swipeMagusAction(mMagusViewModel, viewHolder.adapterPosition, "fail")
+                }
+                recyclerView.adapter?.notifyItemChanged(viewHolder.adapterPosition);
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    var icon = ContextCompat.getDrawable(context!!, R.drawable.failure_icon)
+                    var iconLeft = 0
+                    var iconRight = 0
+                    val background: ColorDrawable
+                    val itemView = viewHolder.itemView
+                        val dip = 16f
+                        val r: Resources = resources
+                    val margin = TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            dip,
+                            r.displayMetrics
+                        ).toInt()
+                    val iconWidth = icon!!.intrinsicWidth
+                    val iconHeight = icon.intrinsicHeight
+                    val cellHeight = itemView.bottom - itemView.top
+                    val iconTop = itemView.top + (cellHeight - iconHeight) / 2
+                    val iconBottom = iconTop + iconHeight
+                    var actionHintText: String = ""
+                    val actionHintTextView: TextView
+
+                    // Right swipe.
+                    if (dX > 0) {
+                        icon = ContextCompat.getDrawable(context!!, R.drawable.failure_icon)
+                        icon?.setTint(Color.BLACK)
+                        background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.failure))
+                        background.setBounds(itemView.left, itemView.top, (itemView.left + dX).toInt(), itemView.bottom)
+                        iconLeft = margin
+                        iconRight = margin + iconWidth
+                    } /*Left swipe.*/ else if (dX < 0) {
+                        icon = ContextCompat.getDrawable(context!!, R.drawable.success_icon)
+                        icon?.setTint(Color.BLACK)
+                        background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.success))
+                        background.setBounds((itemView.right - dX).toInt(), itemView.top, (itemView.right + dX).toInt(), itemView.bottom)
+                        iconLeft = itemView.right - margin - iconWidth
+                        iconRight = itemView.right - margin
+                    } else {
+                        background = ColorDrawable(Color.TRANSPARENT)
+                    }
+                    background.draw(c)
+                    icon?.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    icon?.draw(c)
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                }
+            }
+        }
+
+        val myHelper = ItemTouchHelper(myCallback)
+        myHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun swipeMagusAction(viewModel: MagusViewModel, position: Int, result: String) {
+
+        val sink = viewModel.activeListOfRunes[position].sinkValue * viewModel.activeListOfRunes[position].bonus
+
+        // update
+        viewModel.previousSink = mMagusViewModel.currentSink
+
+        // update history log list
+        var message = ""
+        when (result) {
+            "fail" -> {
+                message = "-$sink sink"
+                viewModel.currentSink -= sink
+                viewModel.magusOutcome = false
+            }
+            "success" -> {
+                message = "+$sink sink"
+                viewModel.currentSink += sink
+                viewModel.magusOutcome = true
+            }
+        }
+        viewModel.historyLogList.add(0, HistoryLog(Date(), message, viewModel.currentSink, viewModel.magusOutcome))
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+
+        // update current sink value in parent fragment
+        modifySinkValueOnTheMain(requireView(), viewModel)
     }
 
     fun modifySinkValueOnTheMain(view: View, viewModel: MagusViewModel) {
