@@ -213,20 +213,20 @@ class MainMagusFragment : Fragment() {
 
         when {
             viewModel.currentSink > viewModel.previousSink -> {
-                view.curentSinkValue.setTextColor(Color.parseColor("#008000"))
+                view.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.sinkSuccess))
                 view.sinkDynamic.visibility = View.VISIBLE
                 view.sinkDynamic.setImageResource(R.drawable.arrow_upward_icon)
-                view.sinkDynamic.drawable.setTint(Color.parseColor("#008000"))
+                view.sinkDynamic.drawable.setTint(ContextCompat.getColor(requireContext(), R.color.sinkSuccess))
             }
             viewModel.currentSink < viewModel.previousSink -> {
-                view.curentSinkValue.setTextColor(Color.parseColor("#D45E57"))
+                view.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.failure))
                 view.sinkDynamic.visibility = View.VISIBLE
                 view.sinkDynamic.setImageResource(R.drawable.arrow_downward_icon)
-                view.sinkDynamic.drawable.setTint(Color.parseColor("#D45E57"))
+                view.sinkDynamic.drawable.setTint(ContextCompat.getColor(requireContext(), R.color.failure))
             }
             else -> {
                 view.sinkDynamic.visibility = View.GONE
-                view.curentSinkValue.setTextColor(Color.parseColor("#3A3939"))
+                view.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.sinkDefault))
             }
         }
         view.curentSinkValue.text = mMagusViewModel.currentSink.toString()

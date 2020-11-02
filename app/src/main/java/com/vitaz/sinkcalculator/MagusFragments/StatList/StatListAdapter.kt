@@ -2,11 +2,13 @@ package com.vitaz.sinkcalculator.MagusFragments.StatList
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Color.TRANSPARENT
 import android.graphics.Color.parseColor
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.Model.Stat
 import com.vitaz.sinkcalculator.R
@@ -54,10 +56,10 @@ class StatListAdapter (
 
         // change row background
         if (statList[position].isSelected == null) {
-            holder.itemView.statRowBackground.setBackgroundColor(Color.parseColor("#00181814"))
+            holder.itemView.statRowBackground.setBackgroundColor(TRANSPARENT)
         } else if (position % 2 == 1) {
-            holder.itemView.statRowBackground.setBackgroundColor(Color.parseColor("#BB2A2E27"))
-        } else holder.itemView.statRowBackground.setBackgroundColor(Color.parseColor("#BB21251C"))
+            holder.itemView.statRowBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tableRowBackgroundOdd))
+        } else holder.itemView.statRowBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tableRowBackgroundEven))
 
         // set add/remove button. remove if null
         holder.itemView.actionButton.visibility = View.VISIBLE
@@ -67,11 +69,11 @@ class StatListAdapter (
             }
             statList[position].isSelected!! -> {
                 holder.itemView.actionButton.setImageResource(R.drawable.remove_circle_icon)
-                holder.itemView.actionButton.drawable.setTint(parseColor("#d45e57"))
+                holder.itemView.actionButton.drawable.setTint(ContextCompat.getColor(context, R.color.failure))
             }
             else -> {
                 holder.itemView.actionButton.setImageResource(R.drawable.add_circle_icon)
-                holder.itemView.actionButton.drawable.setTint(parseColor("#15AF25"))
+                holder.itemView.actionButton.drawable.setTint(ContextCompat.getColor(context, R.color.success))
             }
         }
 

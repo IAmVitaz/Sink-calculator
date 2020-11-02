@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.Model.HistoryLog
@@ -69,8 +70,8 @@ class MainRuneListAdapter(
 
         //change row color
         if (position % 2 == 1) {
-            holder.itemView.rune_row_background.setBackgroundColor(Color.parseColor("#BB2A2E27"))
-        } else holder.itemView.rune_row_background.setBackgroundColor(Color.parseColor("#BB21251C"))
+            holder.itemView.rune_row_background.setBackgroundColor(ContextCompat.getColor(context, R.color.tableRowBackgroundOdd))
+        } else holder.itemView.rune_row_background.setBackgroundColor(ContextCompat.getColor(context, R.color.tableRowBackgroundEven))
 
     }
 
@@ -109,7 +110,7 @@ class MainRuneListAdapter(
             // update history log list
             val message = "-$sink sink"
             mMagusViewModel.historyLogList.add(0, HistoryLog(Date(), message, mMagusViewModel.currentSink, mMagusViewModel.magusOutcome))
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 
             // update current sink value in parent fragment
             fragment.modifySinkValueOnTheMain(fragment.requireView(), mMagusViewModel)

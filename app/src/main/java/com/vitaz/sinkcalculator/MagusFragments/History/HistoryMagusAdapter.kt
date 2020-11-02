@@ -43,20 +43,20 @@ class HistoryMagusAdapter(
 
         // change row background
         if (position % 2 == 1) {
-            holder.itemView.historyRowBackground.setBackgroundColor(Color.parseColor("#BB2A2E27"))
-        } else holder.itemView.historyRowBackground.setBackgroundColor(Color.parseColor("#BB21251C"))
+            holder.itemView.historyRowBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tableRowBackgroundOdd))
+        } else holder.itemView.historyRowBackground.setBackgroundColor(ContextCompat.getColor(context, R.color.tableRowBackgroundEven))
 
         when {
             logList[position].isPositiveOutcome == null -> {
                 holder.itemView.log.setTypeface(null, Typeface.BOLD)
-                holder.itemView.log.setTextColor(Color.parseColor("#FFFFFF"))
+                holder.itemView.log.setTextColor(ContextCompat.getColor(context, R.color.white))
                 holder.setIsRecyclable(false)
             }
             logList[position].isPositiveOutcome!! -> {
                 holder.itemView.log.setTextColor(ContextCompat.getColor(context, R.color.success))
             }
             else -> {
-                holder.itemView.log.setTextColor(Color.parseColor("#D45E57"))
+                holder.itemView.log.setTextColor(ContextCompat.getColor(context, R.color.failure))
             }
         }
     }

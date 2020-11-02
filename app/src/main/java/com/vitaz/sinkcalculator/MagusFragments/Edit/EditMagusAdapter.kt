@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.MagusFragments.Main.MainRuneListAdapter
@@ -106,8 +107,8 @@ class EditMagusAdapter (
 
         //change row color
         if (position % 2 == 1) {
-            holder.itemView.editStat_row_background.setBackgroundColor(Color.parseColor("#BB2A2E27"))
-        } else holder.itemView.editStat_row_background.setBackgroundColor(Color.parseColor("#BB21251C"))
+            holder.itemView.editStat_row_background.setBackgroundColor(ContextCompat.getColor(context, R.color.tableRowBackgroundOdd))
+        } else holder.itemView.editStat_row_background.setBackgroundColor(ContextCompat.getColor(context, R.color.tableRowBackgroundEven))
 
         holder.itemView.statName.text = statList[position].statName
 
