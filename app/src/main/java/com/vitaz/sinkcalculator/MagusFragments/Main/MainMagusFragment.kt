@@ -191,14 +191,15 @@ class MainMagusFragment : Fragment() {
         var message = ""
         when (result) {
             "fail" -> {
-                message = "-$sink sink"
                 viewModel.currentSink -= sink
                 viewModel.magusOutcome = false
+                message = "-$sink sink"
             }
             "success" -> {
-                message = "+$sink sink"
-                viewModel.currentSink += sink
+                viewModel.currentSink -= sink
                 viewModel.magusOutcome = true
+                message += "+${viewModel.activeListOfRunes[position].bonus.toString()} ${viewModel.activeListOfRunes[position].statName}"
+                message +=  ", -$sink sink"
             }
         }
         viewModel.historyLogList.add(0, HistoryLog(Date(), message, viewModel.currentSink, viewModel.magusOutcome))
