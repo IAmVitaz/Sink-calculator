@@ -50,10 +50,20 @@ class EditMagusAdapter (
                 holder.itemView.negativeSinkLayout.visibility = View.VISIBLE
                 holder.itemView.statNameLayout.visibility = View.GONE
                 statList[position].isNegative = true
+
+                statList[position].statNegative = statList[position].statPositive
+                holder.itemView.negativeSinkStat.setText(statList[position].statNegative.toString())
+                statList[position].statPositive = 0
+                holder.itemView.positiveSinkStat.setText(statList[position].statPositive.toString())
             } else {
                 holder.itemView.negativeSinkLayout.visibility = View.GONE
                 holder.itemView.statNameLayout.visibility = View.VISIBLE
                 statList[position].isNegative = false
+
+                statList[position].statPositive = statList[position].statNegative
+                holder.itemView.positiveSinkStat.setText(statList[position].statPositive.toString())
+                statList[position].statNegative = 0
+                holder.itemView.negativeSinkStat.setText(statList[position].statNegative.toString())
             }
         }
 
