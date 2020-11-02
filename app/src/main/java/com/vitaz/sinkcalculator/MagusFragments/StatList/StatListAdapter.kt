@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.Model.Stat
 import com.vitaz.sinkcalculator.R
@@ -77,30 +78,30 @@ class StatListAdapter (
             }
         }
 
-        holder.itemView.actionButton.setOnClickListener {
+        holder.itemView.statRowBackground.setOnClickListener {
 
 //            if (lowerHeaderPosition < 1) lowerHeaderPosition = 1
+            if (holder.itemView.actionButton.isVisible) {
+                val itemToMove = statList[position]
 
-            val itemToMove = statList[position]
-
-            if (!statList[position].isSelected!!){
-                statList[position].isSelected = true
-                holder.itemView.actionButton.setImageResource(R.drawable.remove_circle_icon)
-                holder.itemView.actionButton.drawable.setTint(parseColor("#FF0000"))
-                statList.add(lowerHeaderPosition, itemToMove)
-                statList.removeAt(position+1)
-                lowerHeaderPosition ++
-                notifyDataSetChanged()
-            } else {
-                statList[position].isSelected = false
-                holder.itemView.actionButton.setImageResource(R.drawable.add_circle_icon)
-                holder.itemView.actionButton.drawable.setTint(parseColor("#008000"))
-                statList.add(lowerHeaderPosition+1, itemToMove)
-                statList.removeAt(position)
-                lowerHeaderPosition --
-                notifyDataSetChanged()
+                if (!statList[position].isSelected!!){
+                    statList[position].isSelected = true
+                    holder.itemView.actionButton.setImageResource(R.drawable.remove_circle_icon)
+                    holder.itemView.actionButton.drawable.setTint(ContextCompat.getColor(context, R.color.failure))
+                    statList.add(lowerHeaderPosition, itemToMove)
+                    statList.removeAt(position+1)
+                    lowerHeaderPosition ++
+                    notifyDataSetChanged()
+                } else {
+                    statList[position].isSelected = false
+                    holder.itemView.actionButton.setImageResource(R.drawable.add_circle_icon)
+                    holder.itemView.actionButton.drawable.setTint(ContextCompat.getColor(context, R.color.success))
+                    statList.add(lowerHeaderPosition+1, itemToMove)
+                    statList.removeAt(position)
+                    lowerHeaderPosition --
+                    notifyDataSetChanged()
+                }
             }
-
         }
 
     }
