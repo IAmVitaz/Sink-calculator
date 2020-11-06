@@ -8,13 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.vitaz.sinkcalculator.MagusFragments.Edit.EditMagusAdapter
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
-import kotlinx.android.synthetic.main.fragment_edit_magus.view.*
 import kotlinx.android.synthetic.main.fragment_history_magus.*
 import kotlinx.android.synthetic.main.fragment_history_magus.view.*
-import kotlinx.android.synthetic.main.fragment_main_magus.*
 import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
 import me.toptas.fancyshowcase.FocusShape
@@ -53,12 +50,12 @@ class HistoryMagusFragment : Fragment() {
         preferenceManager = this.requireActivity().getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
         // Run history intro if we are on the 8th step of tutorial
-        runEighthStepOfTutorial()
+        runNinthStepOfTutorial()
 
     }
 
-    private fun runEighthStepOfTutorial() {
-        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 8) {
+    private fun runNinthStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 9) {
 
             //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
             historyRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
@@ -67,7 +64,7 @@ class HistoryMagusFragment : Fragment() {
 
                         val fancyShowCaseView1 =
                             FancyShowCaseView.Builder(requireActivity())
-                                .title(getString(R.string.tutorial_8_1))
+                                .title(getString(R.string.tutorial_9_1))
                                 .focusOn(historyRecyclerView)
                                 .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                 .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -82,7 +79,7 @@ class HistoryMagusFragment : Fragment() {
                             var target: View = viewItem?.itemView?.findViewById<View>(R.id.historyRowBackground)
                             val fancyShowCaseView2 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_8_2))
+                                    .title(getString(R.string.tutorial_9_2))
                                     .focusOn(target)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -93,7 +90,7 @@ class HistoryMagusFragment : Fragment() {
                             target = viewItem?.itemView?.findViewById<View>(R.id.log)
                             val fancyShowCaseView3 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_8_3))
+                                    .title(getString(R.string.tutorial_9_3))
                                     .focusOn(target)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -104,7 +101,7 @@ class HistoryMagusFragment : Fragment() {
                             target = viewItem?.itemView?.findViewById<View>(R.id.sink)
                             val fancyShowCaseView4 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_8_4))
+                                    .title(getString(R.string.tutorial_9_4))
                                     .focusOn(target)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -114,14 +111,14 @@ class HistoryMagusFragment : Fragment() {
 
                             val fancyShowCaseView5 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_8_5))
+                                    .title(getString(R.string.tutorial_9_5))
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
                                     .enableAutoTextPosition()
                                     .build()
 
                             val fancyShowCaseView6 =
                                 FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_8_6))
+                                    .title(getString(R.string.tutorial_9_6))
                                     .focusOn(backToMain)
                                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -139,7 +136,7 @@ class HistoryMagusFragment : Fragment() {
                             mQueue.show()
 
                             //Move to the 9th step
-                            preferenceManager.edit().putInt("tutorialCurrentStep", 9).apply()
+                            preferenceManager.edit().putInt("tutorialCurrentStep", 10).apply()
                         }
 
                         // At this point the layout is complete

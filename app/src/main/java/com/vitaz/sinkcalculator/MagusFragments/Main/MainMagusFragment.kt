@@ -1,5 +1,6 @@
 package com.vitaz.sinkcalculator.MagusFragments.Main
 
+import android.animation.ValueAnimator
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.TypedValue
 import android.view.*
 import android.widget.Button
@@ -92,12 +94,13 @@ class MainMagusFragment : Fragment() {
         // Run rune intro if we are on the 4th step of tutorial
         runFourthStepOfTutorial()
 
-        // Run critical failure intro if we are on the 6th step of tutorial
+        // Run swiping left intro if we are on the 6th step of tutorial
         runSixthStepOfTutorial()
+
         //7th step is being run from MainRuneListAdapter
 
         // Run final intro if we are on the 9th step of tutorial
-        runNinthStepOfTutorial()
+        runTenthStepOfTutorial()
 
         // implement swipes:
         val myCallback = object: ItemTouchHelper.SimpleCallback(0,
@@ -114,8 +117,10 @@ class MainMagusFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 if (direction == ItemTouchHelper.LEFT) {
                     swipeMagusAction(mMagusViewModel, viewHolder.adapterPosition, "success")
+                    runSeventhStepOfTutorial()
                 } else if (direction == ItemTouchHelper.RIGHT) {
                     swipeMagusAction(mMagusViewModel, viewHolder.adapterPosition, "fail")
+                    runEightStepOfTutorial()
                 }
                 recyclerView.adapter?.notifyItemChanged(viewHolder.adapterPosition);
             }
@@ -419,30 +424,23 @@ class MainMagusFragment : Fragment() {
 
                         if (viewItem != null) {
 
+                            var target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
                             val fancyShowCaseView1 =
                                 FancyShowCaseView.Builder(requireActivity())
                                     .title(getString(R.string.tutorial_6_1))
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            val fancyShowCaseView2 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_6_2))
                                     .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
                                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                                     .roundRectRadius(90)
                                     .enableAutoTextPosition()
                                     .build()
+                                    .show()
 
-                            val mQueue = FancyShowCaseQueue()
-                                .add(fancyShowCaseView1)
-                                .add(fancyShowCaseView2)
-                            mQueue.show()
+                            var x = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+                            swipeRecyclerViewItem(runeListRecyclerView, 1, x.width /2,  ItemTouchHelper.START, 2000)
 
-                            //Move to the 5th step
+
+                            //Move to the 7th step
                             preferenceManager.edit().putInt("tutorialCurrentStep", 7).apply()
                         }
 
@@ -454,11 +452,50 @@ class MainMagusFragment : Fragment() {
         }
     }
 
-    fun runSeventhStepOfTutorial() {
+    private fun runSeventhStepOfTutorial() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 7) {
+
+            //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
+            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+                object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+
+                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
+
+                        if (viewItem != null) {
+
+                            var target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+                            val fancyShowCaseView1 =
+                                FancyShowCaseView.Builder(requireActivity())
+                                    .title(getString(R.string.tutorial_7_1))
+                                    .focusOn(target)
+                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                    .roundRectRadius(90)
+                                    .enableAutoTextPosition()
+                                    .build()
+                                    .show()
+
+                            var x = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+                            swipeRecyclerViewItem(runeListRecyclerView, 1, x.width /2,  ItemTouchHelper.END, 2000)
+
+                            //Move to the 8th step
+                            preferenceManager.edit().putInt("tutorialCurrentStep", 8).apply()
+                        }
+
+                        // At this point the layout is complete
+                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                }
+            )
+        }
+    }
+
+    fun runEightStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 8) {
             val fancyShowCaseView1 =
                 FancyShowCaseView.Builder(requireActivity())
-                    .title(getString(R.string.tutorial_7_1))
+                    .title(getString(R.string.tutorial_8_1))
                     .focusOn(moveToHistory)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
@@ -468,16 +505,16 @@ class MainMagusFragment : Fragment() {
                     .show()
 
             //Move to the 8th step
-            preferenceManager.edit().putInt("tutorialCurrentStep", 8).apply()
+            preferenceManager.edit().putInt("tutorialCurrentStep", 9).apply()
         }
     }
 
-    private fun runNinthStepOfTutorial() {
-        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 9) {
+    private fun runTenthStepOfTutorial() {
+        if (preferenceManager.getInt("tutorialCurrentStep", 0) == 10) {
 
             val fancyShowCaseView1 =
                 FancyShowCaseView.Builder(requireActivity())
-                    .title(getString(R.string.tutorial_9_1))
+                    .title(getString(R.string.tutorial_10_1))
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
                     .enableAutoTextPosition()
                     .build()
@@ -486,5 +523,53 @@ class MainMagusFragment : Fragment() {
             //Move to the third step
             preferenceManager.edit().putInt("tutorialCurrentStep", 0).apply()
         }
+    }
+
+    private fun swipeRecyclerViewItem(
+        recyclerView: RecyclerView,
+        index: Int,
+        distance: Int,
+        direction: Int,
+        time: Long
+    ) {
+        val childView = recyclerView.getChildAt(index) ?: return
+        val x = childView.width / 2F
+        val viewLocation = IntArray(2)
+        val parentLocation = IntArray(2)
+        childView.getLocationInWindow(viewLocation)
+        recyclerView.getLocationInWindow(parentLocation)
+        val y = (viewLocation[1] - parentLocation[1] + childView.height) / 2F
+        val downTime = SystemClock.uptimeMillis()
+        recyclerView.dispatchTouchEvent(
+            MotionEvent.obtain(
+                downTime,
+                downTime,
+                MotionEvent.ACTION_DOWN,
+                x,
+                y,
+                0
+            )
+        )
+        ValueAnimator.ofInt(0, distance).apply {
+            duration = time
+            addUpdateListener {
+                val dX = it.animatedValue as Int
+                val mX = when (direction) {
+                    ItemTouchHelper.END -> x + dX
+                    ItemTouchHelper.START -> x - dX
+                    else -> 0F
+                }
+                recyclerView.dispatchTouchEvent(
+                    MotionEvent.obtain(
+                        downTime,
+                        SystemClock.uptimeMillis(),
+                        MotionEvent.ACTION_MOVE,
+                        mX,
+                        y,
+                        0
+                    )
+                )
+            }
+        }.start()
     }
 }

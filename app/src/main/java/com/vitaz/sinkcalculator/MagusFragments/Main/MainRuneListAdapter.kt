@@ -63,10 +63,10 @@ class MainRuneListAdapter(
             holder.itemView.findNavController().navigate(action)
         }
 
-        holder.itemView.rune_row_background.setOnLongClickListener(OnLongClickListener {
-            showDialog(runeList[position].runeName, runeList[position].sinkValue, runeList[position].minusSinkValue, runeList[position].bonus)
-            false
-        })
+//        holder.itemView.rune_row_background.setOnLongClickListener(OnLongClickListener {
+//            showDialog(runeList[position].runeName, runeList[position].sinkValue, runeList[position].minusSinkValue, runeList[position].bonus)
+//            false
+//        })
 
         //change row color
         if (position % 2 == 1) {
@@ -75,55 +75,55 @@ class MainRuneListAdapter(
 
     }
 
-    private fun showDialog(runeName: String, sinkValue: Double, minusSinkValue: Double, bonus: Int) {
-        val dialog = Dialog(context)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_message_critical_failure)
-        val runeMessage = dialog.findViewById(R.id.message1) as TextView
-        runeMessage.text = "You are about to confirm that you hit critical failure when use $runeName rune."
-        val sinkMessage = dialog.findViewById(R.id.message2) as TextView
-        val yesBtn = dialog.findViewById(R.id.yesButton) as Button
-        val noBtn = dialog.findViewById(R.id.noButton) as Button
-        val switch = dialog.findViewById(R.id.positiveSwitch) as Switch
-        val positivePower = sinkValue * bonus
-        val negativePower = minusSinkValue * bonus
-        var sink = positivePower
-        sinkMessage.text = "Your sink would be decreased by $sink sink."
-        switch.setOnCheckedChangeListener { _, switchIsChecked ->
-            if (switchIsChecked) {
-                sink = negativePower
-                sinkMessage.text = "Your sink would be decreased by $sink sink."
-            } else {
-                sink = positivePower
-                sinkMessage.text = "Your sink would be decreased by $sink sink."
-            }
-        }
-        yesBtn.setOnClickListener {
-            // update and calculate sink
-            mMagusViewModel.previousSink = mMagusViewModel.currentSink
-            mMagusViewModel.currentSink -= sink
-
-            //update outcomeStatus
-            mMagusViewModel.magusOutcome = false
-
-            // update history log list
-            val message = "-$sink sink"
-            mMagusViewModel.historyLogList.add(0, HistoryLog(Date(), message, mMagusViewModel.currentSink, mMagusViewModel.magusOutcome))
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-
-            // update current sink value in parent fragment
-            fragment.modifySinkValueOnTheMain(fragment.requireView(), mMagusViewModel)
-
-            // Run intro to history intro if we are on the 7th step of tutorial
-            fragment.runSeventhStepOfTutorial()
-
-            dialog.hide()
-        }
-        noBtn.setOnClickListener {
-            dialog.hide()
-        }
-        dialog.show()
-
-    }
+//    private fun showDialog(runeName: String, sinkValue: Double, minusSinkValue: Double, bonus: Int) {
+//        val dialog = Dialog(context)
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        dialog.setCancelable(false)
+//        dialog.setContentView(R.layout.dialog_message_critical_failure)
+//        val runeMessage = dialog.findViewById(R.id.message1) as TextView
+//        runeMessage.text = "You are about to confirm that you hit critical failure when use $runeName rune."
+//        val sinkMessage = dialog.findViewById(R.id.message2) as TextView
+//        val yesBtn = dialog.findViewById(R.id.yesButton) as Button
+//        val noBtn = dialog.findViewById(R.id.noButton) as Button
+//        val switch = dialog.findViewById(R.id.positiveSwitch) as Switch
+//        val positivePower = sinkValue * bonus
+//        val negativePower = minusSinkValue * bonus
+//        var sink = positivePower
+//        sinkMessage.text = "Your sink would be decreased by $sink sink."
+//        switch.setOnCheckedChangeListener { _, switchIsChecked ->
+//            if (switchIsChecked) {
+//                sink = negativePower
+//                sinkMessage.text = "Your sink would be decreased by $sink sink."
+//            } else {
+//                sink = positivePower
+//                sinkMessage.text = "Your sink would be decreased by $sink sink."
+//            }
+//        }
+//        yesBtn.setOnClickListener {
+//            // update and calculate sink
+//            mMagusViewModel.previousSink = mMagusViewModel.currentSink
+//            mMagusViewModel.currentSink -= sink
+//
+//            //update outcomeStatus
+//            mMagusViewModel.magusOutcome = false
+//
+//            // update history log list
+//            val message = "-$sink sink"
+//            mMagusViewModel.historyLogList.add(0, HistoryLog(Date(), message, mMagusViewModel.currentSink, mMagusViewModel.magusOutcome))
+//            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+//
+//            // update current sink value in parent fragment
+//            fragment.modifySinkValueOnTheMain(fragment.requireView(), mMagusViewModel)
+//
+//            // Run intro to history intro if we are on the 7th step of tutorial
+//            fragment.runSeventhStepOfTutorial()
+//
+//            dialog.hide()
+//        }
+//        noBtn.setOnClickListener {
+//            dialog.hide()
+//        }
+//        dialog.show()
+//
+//    }
 }
