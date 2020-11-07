@@ -26,6 +26,7 @@ class MagusActivity : AppCompatActivity() {
         itemCategory = intent!!.getStringExtra("itemCategory")
 
         itemName = intent!!.getStringExtra("itemName")
+        mMagusViewModel.itemName = itemName
 
         if (mMagusViewModel.historyLogList.size == 0)  {
             mMagusViewModel.historyLogList.add(HistoryLog(Date(),"$itemName smithmagus", 0.0, null))

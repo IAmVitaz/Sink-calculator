@@ -10,6 +10,8 @@ import java.util.*
 
 class MagusViewModel: ViewModel() {
 
+    var itemName = ""
+
     var activeListOfStats = RunesService.createNewStatSet()
 
     var activeListOfRunes = RunesService.createNewRuneSet(activeListOfStats)

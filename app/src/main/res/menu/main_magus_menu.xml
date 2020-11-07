@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_reset_magus"
+        android:title=""
+        android:icon="@drawable/restart_icon"
+        android:iconTint="#ffffff"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_exit_magus_activity"
         android:title=""
         android:icon="@drawable/exit_magus_icon"

@@ -263,6 +263,24 @@ class MainMagusFragment : Fragment() {
             dialog.show()
 
         }
+        else if (item.itemId == R.id.menu_reset_magus) {
+            val dialog = Dialog(requireContext())
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.dialog_message_restart_magus)
+
+            val yesBtn = dialog.findViewById(R.id.exitYesButton) as Button
+            val noBtn = dialog.findViewById(R.id.exitNoButton) as Button
+
+            yesBtn.setOnClickListener {
+                restartMagus(mMagusViewModel)
+                dialog.hide()
+            }
+            noBtn.setOnClickListener {
+                dialog.hide()
+            }
+            dialog.show()
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -270,6 +288,21 @@ class MainMagusFragment : Fragment() {
         val returnToTitle = Intent(activity, MainActivity::class.java)
         startActivity(returnToTitle)
         requireActivity().finish();
+    }
+
+    private fun restartMagus (viewModel: MagusViewModel) {
+        viewModel.previousSink = 0.0
+        viewModel.currentSink = 0.0
+
+        viewModel.historyLogList.clear()
+        viewModel.historyLogList.add(HistoryLog(Date(),"${viewModel.itemName} smithmagus", 0.0, null))
+
+        viewModel.magusOutcome = null
+
+        modifySinkValueOnTheMain(requireView(), viewModel)
+
+        val message = "Current item magus has been restarted. Sink value has been zeroed, history cleaned up"
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
     
     private fun runSecondStepOfTutorial() {
