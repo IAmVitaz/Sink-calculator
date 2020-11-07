@@ -34,6 +34,7 @@ import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
 import me.toptas.fancyshowcase.FocusShape
 import java.util.*
+import kotlin.math.round
 
 
 class MainMagusFragment : Fragment() {
@@ -187,7 +188,7 @@ class MainMagusFragment : Fragment() {
 
     private fun swipeMagusAction(viewModel: MagusViewModel, position: Int, result: String) {
 
-        val sink = viewModel.activeListOfRunes[position].sinkValue * viewModel.activeListOfRunes[position].bonus
+        val sink = round (viewModel.activeListOfRunes[position].sinkValue * viewModel.activeListOfRunes[position].bonus) * 100 / 100
 
         // update
         viewModel.previousSink = mMagusViewModel.currentSink
