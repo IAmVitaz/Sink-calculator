@@ -168,7 +168,7 @@ class MainMagusFragment : Fragment() {
                         icon = ContextCompat.getDrawable(context!!, R.drawable.success_icon)
                         icon?.setTint(Color.BLACK)
                         background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.success))
-                        background.setBounds((itemView.right - dX).toInt(), itemView.top, (itemView.right + dX).toInt(), itemView.bottom)
+                        background.setBounds((itemView.right + dX).toInt(), itemView.top, (itemView.right - dX).toInt(), itemView.bottom)
                         iconLeft = itemView.right - margin - iconWidth
                         iconRight = itemView.right - margin
                     } else {
@@ -494,7 +494,7 @@ class MainMagusFragment : Fragment() {
                 object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
 
-                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
+                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(1)
 
                         if (viewItem != null) {
 
@@ -511,7 +511,7 @@ class MainMagusFragment : Fragment() {
                                     .show()
 
                             var x = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            swipeRecyclerViewItem(runeListRecyclerView, 1, x.width /2,  ItemTouchHelper.END, 2000)
+                            swipeRecyclerViewItem(runeListRecyclerView, 2, x.width /2,  ItemTouchHelper.END, 2000)
 
                             //Move to the 8th step
                             preferenceManager.edit().putInt("tutorialCurrentStep", 8).apply()
