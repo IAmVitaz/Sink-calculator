@@ -10,13 +10,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
-import kotlinx.android.synthetic.main.fragment_history_magus.*
-import kotlinx.android.synthetic.main.fragment_history_magus.view.*
-import me.toptas.fancyshowcase.FancyShowCaseQueue
+import com.vitaz.sinkcalculator.databinding.FragmentHistoryMagusBinding
 import me.toptas.fancyshowcase.FancyShowCaseView
 import me.toptas.fancyshowcase.FocusShape
 
 class HistoryMagusFragment : Fragment() {
+
+    private var _binding: FragmentHistoryMagusBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     lateinit var mMagusViewModel: MagusViewModel
 
@@ -26,12 +29,12 @@ class HistoryMagusFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_history_magus, container, false)
+        _binding = FragmentHistoryMagusBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
-        view.backToMain.setOnClickListener {
+        binding.backToMain.setOnClickListener {
             // move to main magus fragment
             findNavController().navigate(R.id.action_historyMagusFragment_to_mainMagusFragment)
         }
@@ -39,11 +42,16 @@ class HistoryMagusFragment : Fragment() {
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = parentFragment?.context?.let { HistoryMagusAdapter(it, mMagusViewModel.historyLogList) }
-        val recyclerView = view.historyRecyclerView
+        val recyclerView = binding.historyRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
@@ -58,89 +66,89 @@ class HistoryMagusFragment : Fragment() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 9) {
 
             //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            historyRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+            binding.historyRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
                 object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
 
                         val fancyShowCaseView1 =
                             FancyShowCaseView.Builder(requireActivity())
                                 .title(getString(R.string.tutorial_9_1))
-                                .focusOn(historyRecyclerView)
+                                .focusOn(binding.historyRecyclerView)
                                 .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                                 .focusShape(FocusShape.ROUNDED_RECTANGLE)
                                 .roundRectRadius(90)
                                 .enableAutoTextPosition()
                                 .build()
 
-                        val viewItem = historyRecyclerView.findViewHolderForAdapterPosition(mMagusViewModel.historyLogList.size - 1)
+                        val viewItem = binding.historyRecyclerView.findViewHolderForAdapterPosition(mMagusViewModel.historyLogList.size - 1)
 
                         if (viewItem != null) {
 
-                            var target: View = viewItem?.itemView?.findViewById<View>(R.id.historyRowBackground)
-                            val fancyShowCaseView2 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_9_2))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.log)
-                            val fancyShowCaseView3 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_9_3))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.sink)
-                            val fancyShowCaseView4 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_9_4))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val fancyShowCaseView5 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_9_5))
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val fancyShowCaseView6 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_9_6))
-                                    .focusOn(backToMain)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(180)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val mQueue = FancyShowCaseQueue()
-                                .add(fancyShowCaseView1)
-                                .add(fancyShowCaseView2)
-                                .add(fancyShowCaseView3)
-                                .add(fancyShowCaseView4)
-                                .add(fancyShowCaseView5)
-                                .add(fancyShowCaseView6)
-                            mQueue.show()
-
-                            //Move to the 9th step
-                            preferenceManager.edit().putInt("tutorialCurrentStep", 10).apply()
+//                            var target: View = viewItem?.itemView?.findViewById<View>(R.id.historyRowBackground)
+//                            val fancyShowCaseView2 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_9_2))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            target = viewItem?.itemView?.findViewById<View>(R.id.log)
+//                            val fancyShowCaseView3 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_9_3))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            target = viewItem?.itemView?.findViewById<View>(R.id.sink)
+//                            val fancyShowCaseView4 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_9_4))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            val fancyShowCaseView5 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_9_5))
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            val fancyShowCaseView6 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_9_6))
+//                                    .focusOn(binding.backToMain)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(180)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            val mQueue = FancyShowCaseQueue()
+//                                .add(fancyShowCaseView1)
+//                                .add(fancyShowCaseView2)
+//                                .add(fancyShowCaseView3)
+//                                .add(fancyShowCaseView4)
+//                                .add(fancyShowCaseView5)
+//                                .add(fancyShowCaseView6)
+//                            mQueue.show()
+//
+//                            //Move to the 9th step
+//                            preferenceManager.edit().putInt("tutorialCurrentStep", 10).apply()
                         }
 
                         // At this point the layout is complete
-                        historyRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        binding.historyRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 }
             )

@@ -7,11 +7,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.vitaz.sinkcalculator.Model.HistoryLog
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
-import kotlinx.android.synthetic.main.fragment_edit_magus_list_item.view.*
+import com.vitaz.sinkcalculator.databinding.ActivityMagusBinding
 import java.util.*
 
 class MagusActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMagusBinding
     lateinit var mMagusViewModel: MagusViewModel
 
     var itemCategory = ""
@@ -19,21 +20,23 @@ class MagusActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_magus)
+        binding = ActivityMagusBinding.inflate(layoutInflater)
 
         mMagusViewModel = ViewModelProvider(this).get(MagusViewModel::class.java)
 
-        itemCategory = intent!!.getStringExtra("itemCategory")
+        itemCategory = intent!!.getStringExtra("itemCategory").toString()
 
-        itemName = intent!!.getStringExtra("itemName")
+        itemName = intent!!.getStringExtra("itemName").toString()
         mMagusViewModel.itemName = itemName
 
         if (mMagusViewModel.historyLogList.size == 0)  {
             mMagusViewModel.historyLogList.add(HistoryLog(Date(),"$itemName smithmagus", 0.0, null))
         }
 
-        setupActionBarWithNavController(findNavController(R.id.navHostFragment))
+        val view = binding.root
+        setContentView(view)
 
+        setupActionBarWithNavController(findNavController(R.id.navHostFragment))
     }
 
     override fun onSupportNavigateUp(): Boolean {

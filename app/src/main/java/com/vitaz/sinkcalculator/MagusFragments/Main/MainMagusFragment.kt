@@ -26,10 +26,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vitaz.sinkcalculator.MagusActivity
 import com.vitaz.sinkcalculator.MainActivity
 import com.vitaz.sinkcalculator.Model.HistoryLog
+import com.vitaz.sinkcalculator.Model.Rune
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
-import kotlinx.android.synthetic.main.fragment_main_magus.*
-import kotlinx.android.synthetic.main.fragment_main_magus.view.*
+import com.vitaz.sinkcalculator.databinding.FragmentMainMagusBinding
 import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
 import me.toptas.fancyshowcase.FocusShape
@@ -37,7 +37,12 @@ import java.util.*
 import kotlin.math.round
 
 
-class MainMagusFragment : Fragment() {
+class MainMagusFragment : Fragment(), MainRuneListAdapter.SelectRuneListener {
+
+    private var _binding: FragmentMainMagusBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     lateinit var mMagusViewModel: MagusViewModel
 
@@ -51,16 +56,16 @@ class MainMagusFragment : Fragment() {
         //set menu
         setHasOptionsMenu(true)
 
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_main_magus, container, false)
+        _binding = FragmentMainMagusBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
-        view.editRuneList.setOnClickListener {
+        binding.editRuneList.setOnClickListener {
             findNavController().navigate(R.id.action_mainMagusFragment_to_runeListMagusFragment)
         }
 
-        view.moveToHistory.setOnClickListener {
+        binding.moveToHistory.setOnClickListener {
             findNavController().navigate(R.id.action_mainMagusFragment_to_historyMagusFragment)
         }
 
@@ -70,22 +75,27 @@ class MainMagusFragment : Fragment() {
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //Inflate recyclerView with data
-        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, mMagusViewModel.activeListOfRunes, mMagusViewModel, this) }
-        val recyclerView = view.runeListRecyclerView
+        val adapter = parentFragment?.context?.let { MainRuneListAdapter(it, this, mMagusViewModel.activeListOfRunes, mMagusViewModel, this) }
+        val recyclerView = binding.runeListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
 
         val itemName = (activity as MagusActivity).itemName
-        this.itemName.text = itemName
+        binding.itemName.text = itemName
 
         val itemCategory = (activity as MagusActivity).itemCategory
         val itemCategoryResourceId = this.resources.getIdentifier(itemCategory, "drawable", requireContext().packageName)
-        this.itemCategory.setImageResource(itemCategoryResourceId)
+        binding.itemCategory.setImageResource(itemCategoryResourceId)
 
         preferenceManager = this.requireActivity().getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
@@ -219,30 +229,32 @@ class MainMagusFragment : Fragment() {
 
         when {
             viewModel.currentSink > viewModel.previousSink -> {
-                view.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.sinkSuccess))
-                view.sinkDynamic.visibility = View.VISIBLE
-                view.sinkDynamic.setImageResource(R.drawable.arrow_upward_icon)
-                view.sinkDynamic.drawable.setTint(ContextCompat.getColor(requireContext(), R.color.sinkSuccess))
+                binding.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.sinkSuccess))
+                binding.sinkDynamic.visibility = View.VISIBLE
+                binding.sinkDynamic.setImageResource(R.drawable.arrow_upward_icon)
+                binding.sinkDynamic.drawable.setTint(ContextCompat.getColor(requireContext(), R.color.sinkSuccess))
             }
             viewModel.currentSink < viewModel.previousSink -> {
-                view.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.failure))
-                view.sinkDynamic.visibility = View.VISIBLE
-                view.sinkDynamic.setImageResource(R.drawable.arrow_downward_icon)
-                view.sinkDynamic.drawable.setTint(ContextCompat.getColor(requireContext(), R.color.failure))
+                binding.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.failure))
+                binding.sinkDynamic.visibility = View.VISIBLE
+                binding.sinkDynamic.setImageResource(R.drawable.arrow_downward_icon)
+                binding.sinkDynamic.drawable.setTint(ContextCompat.getColor(requireContext(), R.color.failure))
             }
             else -> {
-                view.sinkDynamic.visibility = View.GONE
-                view.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.sinkDefault))
+                binding.sinkDynamic.visibility = View.GONE
+                binding.curentSinkValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.sinkDefault))
             }
         }
-        view.curentSinkValue.text = mMagusViewModel.currentSink.toString()
+        binding.curentSinkValue.text = mMagusViewModel.currentSink.toString()
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_magus_menu, menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_exit_magus_activity) {
             val dialog = Dialog(requireContext())
@@ -311,7 +323,7 @@ class MainMagusFragment : Fragment() {
             val fancyShowCaseView1 =
                 FancyShowCaseView.Builder(requireActivity())
                     .title(getString(R.string.tutorial_2_1))
-                    .focusOn(overviewPanel)
+                    .focusOn(binding.overviewPanel)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                     .roundRectRadius(90)
@@ -321,7 +333,7 @@ class MainMagusFragment : Fragment() {
             val fancyShowCaseView2 =
                 FancyShowCaseView.Builder(requireActivity())
                     .title(getString(R.string.tutorial_2_2))
-                    .focusOn(sinkLayourMain)
+                    .focusOn(binding.sinkLayourMain)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                     .enableAutoTextPosition()
                     .build()
@@ -329,7 +341,7 @@ class MainMagusFragment : Fragment() {
             val fancyShowCaseView3 =
                 FancyShowCaseView.Builder(requireActivity())
                     .title(getString(R.string.tutorial_2_3))
-                    .focusOn(runeListRecyclerView)
+                    .focusOn(binding.runeListRecyclerView)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER_HORIZONTAL)
                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                     .roundRectRadius(90)
@@ -340,7 +352,7 @@ class MainMagusFragment : Fragment() {
             val fancyShowCaseView4 =
                 FancyShowCaseView.Builder(requireActivity())
                     .title(getString(R.string.tutorial_2_4))
-                    .focusOn(editRuneList)
+                    .focusOn(binding.editRuneList)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                     .roundRectRadius(90)
@@ -364,82 +376,82 @@ class MainMagusFragment : Fragment() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 4) {
 
             //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+            binding.runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
                 object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
 
-                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
+                        val viewItem = binding.runeListRecyclerView.findViewHolderForAdapterPosition(0)
 
                         if (viewItem != null) {
 
-                            val fancyShowCaseView1 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_4_1))
-                                    .focusOn(runeListRecyclerView)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            var target = viewItem?.itemView?.findViewById<View>(R.id.runeLayoutMain)
-                            val fancyShowCaseView2 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_4_2))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.baseSinkLayoutMain)
-                            val fancyShowCaseView3 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_4_3))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(140)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.runeSinkLayoutMain)
-                            val fancyShowCaseView4 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_4_4))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(140)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            val fancyShowCaseView5 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_4_5))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(50)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val mQueue = FancyShowCaseQueue()
-                                .add(fancyShowCaseView1)
-                                .add(fancyShowCaseView2)
-                                .add(fancyShowCaseView3)
-                                .add(fancyShowCaseView4)
-                                .add(fancyShowCaseView5)
-                            mQueue.show()
-
-                            //Move to the 5th step
-                            preferenceManager.edit().putInt("tutorialCurrentStep", 5).apply()
+//                            val fancyShowCaseView1 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_4_1))
+//                                    .focusOn(binding.runeListRecyclerView)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            var target = viewItem?.itemView?.findViewById<View>(R.id.runeLayoutMain)
+//                            val fancyShowCaseView2 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_4_2))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            target = viewItem?.itemView?.findViewById<View>(R.id.baseSinkLayoutMain)
+//                            val fancyShowCaseView3 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_4_3))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(140)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            target = viewItem?.itemView?.findViewById<View>(R.id.runeSinkLayoutMain)
+//                            val fancyShowCaseView4 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_4_4))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(140)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+//                            val fancyShowCaseView5 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_4_5))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(50)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            val mQueue = FancyShowCaseQueue()
+//                                .add(fancyShowCaseView1)
+//                                .add(fancyShowCaseView2)
+//                                .add(fancyShowCaseView3)
+//                                .add(fancyShowCaseView4)
+//                                .add(fancyShowCaseView5)
+//                            mQueue.show()
+//
+//                            //Move to the 5th step
+//                            preferenceManager.edit().putInt("tutorialCurrentStep", 5).apply()
                         }
 
                         // At this point the layout is complete
-                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        binding.runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 }
             )
@@ -450,36 +462,36 @@ class MainMagusFragment : Fragment() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 6) {
 
             //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+            binding.runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
                 object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
 
-                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(0)
+                        val viewItem = binding.runeListRecyclerView.findViewHolderForAdapterPosition(0)
 
                         if (viewItem != null) {
 
-                            var target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            val fancyShowCaseView1 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_6_1))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-                                    .show()
-
-                            var x = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            swipeRecyclerViewItem(runeListRecyclerView, 1, x.width /2,  ItemTouchHelper.START, 2000)
-
-
-                            //Move to the 7th step
-                            preferenceManager.edit().putInt("tutorialCurrentStep", 7).apply()
+//                            var target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+//                            val fancyShowCaseView1 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_6_1))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//                                    .show()
+//
+//                            var x = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+//                            swipeRecyclerViewItem(binding.runeListRecyclerView, 1, x.width /2,  ItemTouchHelper.START, 2000)
+//
+//
+//                            //Move to the 7th step
+//                            preferenceManager.edit().putInt("tutorialCurrentStep", 7).apply()
                         }
 
                         // At this point the layout is complete
-                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        binding.runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 }
             )
@@ -490,35 +502,35 @@ class MainMagusFragment : Fragment() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 7) {
 
             //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+            binding.runeListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
                 object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
 
-                        val viewItem = runeListRecyclerView.findViewHolderForAdapterPosition(1)
+                        val viewItem = binding.runeListRecyclerView.findViewHolderForAdapterPosition(1)
 
                         if (viewItem != null) {
 
-                            var target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            val fancyShowCaseView1 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_7_1))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-                                    .show()
-
-                            var x = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
-                            swipeRecyclerViewItem(runeListRecyclerView, 2, x.width /2,  ItemTouchHelper.END, 2000)
-
-                            //Move to the 8th step
-                            preferenceManager.edit().putInt("tutorialCurrentStep", 8).apply()
+//                            var target = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+//                            val fancyShowCaseView1 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_7_1))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//                                    .show()
+//
+//                            var x = viewItem?.itemView?.findViewById<View>(R.id.rune_row_background)
+//                            swipeRecyclerViewItem(binding.runeListRecyclerView, 2, x.width /2,  ItemTouchHelper.END, 2000)
+//
+//                            //Move to the 8th step
+//                            preferenceManager.edit().putInt("tutorialCurrentStep", 8).apply()
                         }
 
                         // At this point the layout is complete
-                        runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        binding.runeListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 }
             )
@@ -530,7 +542,7 @@ class MainMagusFragment : Fragment() {
             val fancyShowCaseView1 =
                 FancyShowCaseView.Builder(requireActivity())
                     .title(getString(R.string.tutorial_8_1))
-                    .focusOn(moveToHistory)
+                    .focusOn(binding.moveToHistory)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                     .roundRectRadius(140)
@@ -605,5 +617,10 @@ class MainMagusFragment : Fragment() {
                 )
             }
         }.start()
+    }
+
+    override fun selectRune(rune: Rune) {
+        val action = MainMagusFragmentDirections.actionMainMagusFragmentToEditMagusFragment(rune)
+        findNavController().navigate(action)
     }
 }

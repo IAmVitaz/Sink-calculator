@@ -18,17 +18,16 @@ import com.vitaz.sinkcalculator.Model.SinkModifier
 import com.vitaz.sinkcalculator.R
 import com.vitaz.sinkcalculator.Services.RunesService
 import com.vitaz.sinkcalculator.ViewModel.MagusViewModel
-import kotlinx.android.synthetic.main.fragment_edit_magus.*
-import kotlinx.android.synthetic.main.fragment_edit_magus.view.*
-import kotlinx.android.synthetic.main.fragment_edit_magus_list_item.view.*
-import kotlinx.android.synthetic.main.fragment_main_magus.*
-import me.toptas.fancyshowcase.FancyShowCaseQueue
-import me.toptas.fancyshowcase.FancyShowCaseView
-import me.toptas.fancyshowcase.FocusShape
+import com.vitaz.sinkcalculator.databinding.FragmentEditMagusBinding
 import java.util.*
 import kotlin.math.round
 
 class EditMagusFragment : Fragment() {
+
+    private var _binding: FragmentEditMagusBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     lateinit var mMagusViewModel: MagusViewModel
 
@@ -40,13 +39,12 @@ class EditMagusFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_edit_magus, container, false)
+        _binding = FragmentEditMagusBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         mMagusViewModel = ViewModelProvider(requireActivity()).get(MagusViewModel::class.java)
 
-        view.currentSink.text = mMagusViewModel.currentSink.toString()
+        binding.currentSink.text = mMagusViewModel.currentSink.toString()
 
         // Create a new set of SinkModifier objects to count sink change
         mMagusViewModel.listOfSinkModifiers.clear()
@@ -56,12 +54,12 @@ class EditMagusFragment : Fragment() {
         val selectedRuneName = args.selectedRune.runeName
         val selectedRuneImage = args.selectedRune.image
 
-        view.runeNameHeader.text = selectedRuneName
+        binding.runeNameHeader.text = selectedRuneName
         val resourceId = requireContext().resources.getIdentifier(selectedRuneImage, "drawable", requireContext().packageName)
-        view.runeImageHeader.setImageResource(resourceId)
+        binding.runeImageHeader.setImageResource(resourceId)
 
         //Actions on confirm button click:
-        view.confirmEditing.setOnClickListener {
+        binding.confirmEditing.setOnClickListener {
 
             // update and calculate sink
             mMagusViewModel.previousSink = mMagusViewModel.currentSink
@@ -76,7 +74,7 @@ class EditMagusFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
             //hide annoying keyboard
-            view.hideKeyboard()
+            view?.hideKeyboard()
 
             // move to main magus fragment
             findNavController().navigate(R.id.action_editMagusFragment_to_mainMagusFragment)
@@ -85,11 +83,16 @@ class EditMagusFragment : Fragment() {
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = parentFragment?.context?.let { EditMagusAdapter(it, mMagusViewModel.listOfSinkModifiers, args.selectedRune) }
-        val recyclerView = view.characteristicEditListRecyclerView
+        val recyclerView = binding.characteristicEditListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
@@ -180,72 +183,71 @@ class EditMagusFragment : Fragment() {
         if (preferenceManager.getInt("tutorialCurrentStep", 0) == 5) {
 
             //wait till recycler view finished creation. otherwise empty viewItem and Null Pointer Exception
-            characteristicEditListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+            binding.characteristicEditListRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
                 object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
 
-                        val viewItem = characteristicEditListRecyclerView.findViewHolderForAdapterPosition(0)
+                        val viewItem = binding.characteristicEditListRecyclerView.findViewHolderForAdapterPosition(0)
 
                         if (viewItem != null) {
-
-                            viewItem?.itemView?.negativeLayoutSwitch?.isChecked = true
-
-                            val fancyShowCaseView1 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_5_1))
-                                    .focusOn(characteristicEditListRecyclerView)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            var target: View = viewItem?.itemView?.findViewById<View>(R.id.positiveSinkLayout)
-                            val fancyShowCaseView2 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_5_2))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeSinkLayout)
-                            val fancyShowCaseView3 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_5_3))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeLayoutSwitch)
-                            val fancyShowCaseView4 =
-                                FancyShowCaseView.Builder(requireActivity())
-                                    .title(getString(R.string.tutorial_5_4))
-                                    .focusOn(target)
-                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
-                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                                    .roundRectRadius(90)
-                                    .enableAutoTextPosition()
-                                    .build()
-
-                            val mQueue = FancyShowCaseQueue()
-                                .add(fancyShowCaseView1)
-                                .add(fancyShowCaseView2)
-                                .add(fancyShowCaseView3)
-                                .add(fancyShowCaseView4)
-                            mQueue.show()
+//                            viewItem.itemView.negativeLayoutSwitch?.isChecked = true
+//
+//                            val fancyShowCaseView1 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_5_1))
+//                                    .focusOn(binding.characteristicEditListRecyclerView)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER or Gravity.TOP)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            var target: View = viewItem?.itemView?.findViewById<View>(R.id.positiveSinkLayout)
+//                            val fancyShowCaseView2 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_5_2))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeSinkLayout)
+//                            val fancyShowCaseView3 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_5_3))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            target = viewItem?.itemView?.findViewById<View>(R.id.negativeLayoutSwitch)
+//                            val fancyShowCaseView4 =
+//                                FancyShowCaseView.Builder(requireActivity())
+//                                    .title(getString(R.string.tutorial_5_4))
+//                                    .focusOn(target)
+//                                    .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
+//                                    .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                                    .roundRectRadius(90)
+//                                    .enableAutoTextPosition()
+//                                    .build()
+//
+//                            val mQueue = FancyShowCaseQueue()
+//                                .add(fancyShowCaseView1)
+//                                .add(fancyShowCaseView2)
+//                                .add(fancyShowCaseView3)
+//                                .add(fancyShowCaseView4)
+//                            mQueue.show()
 
                             //Move to the 5th step
                             preferenceManager.edit().putInt("tutorialCurrentStep", 6).apply()
                         }
 
                         // At this point the layout is complete
-                        characteristicEditListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        binding.characteristicEditListRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 }
             )

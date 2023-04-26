@@ -10,13 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.iterator
 import androidx.core.widget.addTextChangedListener
-import kotlinx.android.synthetic.main.activity_create_new_item.*
+import com.vitaz.sinkcalculator.databinding.ActivityCreateNewItemBinding
 import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
 import me.toptas.fancyshowcase.FocusShape
 
 class CreateNewItemActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityCreateNewItemBinding
     lateinit var preferenceManager: SharedPreferences
 
     var itemCategory = ""
@@ -24,26 +25,26 @@ class CreateNewItemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_new_item)
+        binding = ActivityCreateNewItemBinding.inflate(layoutInflater)
 
         preferenceManager = getSharedPreferences("tutorial", Context.MODE_PRIVATE)
 
         // Run item creation intro if we are on the 1st step of tutorial
         runFirstStepOfTutorial()
 
-        for (image in categoryHolder) {
+        for (image in binding.categoryHolder) {
             image.setOnClickListener {
-                unselectEverything(categoryHolder)
+                unselectEverything(binding.categoryHolder)
                 image.setBackgroundResource(R.drawable.item_category_background_checked)
                 itemCategory = image.getTag().toString()
             }
         }
 
-        itemNameEditText.addTextChangedListener() {
+        binding.itemNameEditText.addTextChangedListener() {
             itemName = it.toString()
         }
 
-        createItem.setOnClickListener {
+        binding.createItem.setOnClickListener {
 
             if (itemName.isNotEmpty()) {
                 if (itemCategory.isNotEmpty()) {
@@ -55,6 +56,9 @@ class CreateNewItemActivity : AppCompatActivity() {
                 } else Toast.makeText(this, "Please choose the item category", Toast.LENGTH_LONG).show()
             } else Toast.makeText(this, "Please enter the item name", Toast.LENGTH_LONG).show()
         }
+
+        val view = binding.root
+        setContentView(view)
     }
 
     private fun unselectEverything(constraintLayout: ConstraintLayout) {
@@ -69,7 +73,7 @@ class CreateNewItemActivity : AppCompatActivity() {
             val fancyShowCaseView1 =
                 FancyShowCaseView.Builder(this)
                     .title(getString(R.string.tutorial_1_1))
-                    .focusOn(nameConstraintLayout)
+                    .focusOn(binding.nameConstraintLayout)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                     .roundRectRadius(90)
@@ -79,7 +83,7 @@ class CreateNewItemActivity : AppCompatActivity() {
             val fancyShowCaseView2 =
                 FancyShowCaseView.Builder(this)
                     .title(getString(R.string.tutorial_1_2))
-                    .focusOn(categoryHolder)
+                    .focusOn(binding.categoryHolder)
                     .titleStyle(R.style.MyTitleStyle, Gravity.CENTER)
                     .focusShape(FocusShape.ROUNDED_RECTANGLE)
                     .roundRectRadius(90)
