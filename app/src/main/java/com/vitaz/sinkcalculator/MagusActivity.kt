@@ -19,19 +19,17 @@ class MagusActivity : AppCompatActivity() {
     var itemName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMagusBinding.inflate(layoutInflater)
-
         mMagusViewModel = ViewModelProvider(this).get(MagusViewModel::class.java)
-
         itemCategory = intent!!.getStringExtra("itemCategory").toString()
-
         itemName = intent!!.getStringExtra("itemName").toString()
         mMagusViewModel.itemName = itemName
 
         if (mMagusViewModel.historyLogList.size == 0)  {
             mMagusViewModel.historyLogList.add(HistoryLog(Date(),"$itemName smithmagus", 0.0, null))
         }
+
+        super.onCreate(savedInstanceState)
+        binding = ActivityMagusBinding.inflate(layoutInflater)
 
         val view = binding.root
         setContentView(view)
